@@ -69,7 +69,7 @@ jhipster:
     security:
         remember-me:
             # security key (this key should be unique for your application, and kept secret)
-            key: 8897e6d6ad06af88cbf437f78ecb1e4906af844b
+            key: 5e662174e2ca1c2fd937768ed3a73b2ab6090bcb
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: yaldayProto@localhost
         base-url: http://my-server-url-to-change # Modify according to your server's URL
