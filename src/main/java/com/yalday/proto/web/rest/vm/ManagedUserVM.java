@@ -1,5 +1,8 @@
 package com.yalday.proto.web.rest.vm;
 
+
+
+import com.yalday.proto.domain.enumeration.Type;
 import com.yalday.proto.service.dto.UserDTO;
 import javax.validation.constraints.Size;
 
@@ -23,11 +26,11 @@ public class ManagedUserVM extends UserDTO {
     }
 
     public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
-                         String email, boolean activated, String imageUrl, String langKey,
+                         String email, boolean activated, String imageUrl, String langKey, Type userType,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
                         Set<String> authorities) {
 
-        super(id, login, firstName, lastName, email, activated, imageUrl, langKey,
+        super(id, login, firstName, lastName, email, activated, imageUrl, langKey, userType,
             createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
 
         this.password = password;
