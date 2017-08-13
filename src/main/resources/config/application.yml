@@ -46,8 +46,8 @@ spring:
 
         # see https://developers.facebook.com/docs/facebook-login/v2.2
         facebook:
-            client-id: xxx
-            client-secret: xxx
+            client-id: 1214881308602236
+            client-secret: 6df057727d7034a1784b097fb2330e65
 
         # see https://apps.twitter.com/app/
         twitter:
@@ -89,7 +89,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: yaldayProto@localhost
+        from: yaldayteam@gmail.com
     swagger:
         default-include-pattern: /api/.*
         title: yaldayProto API
