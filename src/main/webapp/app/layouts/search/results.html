@@ -1,0 +1,30 @@
+<div class="row">
+		<h3 class="tagline" align="centre"> Showing {{vm.users.length}} results</h3> 
+</div>
+
+<div class="container-fluid">
+	<!--div class="col-md-2"> </div-->
+	<div class="col-md-8 col-md-offset-2"> 
+			<div class="card" ng-repeat="user in vm.users">
+			  <img class="card-img-left" src="../../content/images/logo-jhipster.png" alt="Card image cap">
+			  <div class="card-block">
+			    <h4 class="card-title">{{user.name}}</h4>
+			    <p class="card-text"> Description Description Description Description Description Description Description Description </p>
+			    <p class="card-text"> {{user.address}},{{user.city}},{{user.postcode}}</p>
+			    <div class="row" align="centre">
+			    	rating
+		            <i class="fa fa-star" ng-if="user.rating >= 1"></i>	    
+		            <i class="fa fa-star" ng-if="user.rating >= 2"></i>	    	
+		            <i class="fa fa-star" ng-if="user.rating >= 3"></i>	    	
+		            <i class="fa fa-star" ng-if="user.rating >= 4"></i>	    	
+		            <i class="fa fa-star" ng-if="user.rating >= 5"></i>	    		
+			    </div>
+			    <!--a href="#" class="btn btn-primary inline">Visit Page</a>
+			    <a href="#" class="btn btn-primary inline">Book Now</a>
+			    <br-->
+			  </div>
+			</div>
+		<br>
+	</div>
+	<!--div class="col-md-2"> </div-->
+</div>

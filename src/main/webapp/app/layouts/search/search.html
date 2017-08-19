@@ -1,0 +1,29 @@
+<div class="row">
+	<!--div class="col-md-3"/-->
+	<div class="col-md-6 col-md-offset-3"> <h1 class="tagline"> Yalday! Where to next? </h1> </div>
+	<!--div class="col-md-3"/-->
+</div>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<div class="Field Field-is-search">
+			<input class="flext-field search-flext" id="searchtext" name="searchtext" placeholder="Search!" /> 
+			<input type="text"  
+				class="flext-field misc-flext" 
+				id="field_bookingDate" 
+				name="bookingDate" 
+				datetime-picker="{{dateformat}}" 
+				ng-model="vm.bookingDate" 
+				is-open="vm.datePickerOpenStatus.bookingDate"
+				placeholder="What time?"
+				ng-click="vm.openCalendar('bookingDate')"	
+				datepicker-options="{showWeeks: false}"			
+				/> 
+			<a ui-sref="search">
+			<!--button type="submit" class="btn search-btn" ng-click="vm.goSearch()" ui-sref="search"><span class="fa fa-search"></span></button-->
+			<button type="submit" class="btn search-btn" ng-click="vm.goSearch()"><span class="fa fa-search"></span></button>
+			</a>
+		</div>
+	</div>
+</div>
+<br>

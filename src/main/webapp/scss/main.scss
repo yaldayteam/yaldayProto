@@ -1,7 +1,18 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
+
 body {
-    background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333;
+font-family: 'Roboto Condensed', regular;
+   /* color: #333;*/
+       padding-bottom:40px;   /* Height of the footer */
+
+}
+
+.right{
+    float:right;
+}
+
+.left{
+    float:left;
 }
 
 /* ==========================================================================
@@ -10,6 +21,8 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+
+
 
 /* ==========================================================================
 Development Ribbon
@@ -36,7 +49,7 @@ Development Ribbon
         border: 1px solid #faa;
         color: #fff;
         display: block;
-        font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font: bold 81.25% "Roboto Condensed";
         margin: 1px 0;
         padding: 10px 50px;
         text-align: center;
@@ -154,7 +167,11 @@ Generic styles
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */
-a:hover, .hand, [jh-sort-by] {
+a:hover {
+  cursor: pointer;
+}
+
+.hand {
     cursor: pointer;
 }
 
@@ -291,7 +308,7 @@ entity tables helpers
             opacity: 0.5;
             &:hover {
                 /* full visible sorting icons and pointer when mouse is over them */
-                opacity: 1;
+                /*opacity: 1;*/
                 cursor: pointer;
             }
         }
@@ -380,5 +397,253 @@ Social button
     color: #fff;
 }
 
-
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+
+
+
+
+
+
+
+
+/* Added May 2017*/
+
+
+.tagline {
+    font-size: 30px;
+    color: #ccc;
+    text-align: center;
+}
+
+.searchText {
+    width: 600px;
+    height: 100px;
+    border: 0px none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: #d3d1d1;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+
+}
+
+.navbar {    
+  background: #fff;;
+    border: none;
+}
+
+.nav {
+  font: "Roboto Condensed";
+  color: #ffffff;
+}
+
+.footer {
+  font: "Roboto Condensed";
+    background: #ffffff;
+
+    color:    #000000; 
+
+}
+
+
+.footer-left{ float: left; width: 33%; }
+.footer-right{ float: right; width: 33%; }
+.footer-center{ display: inline-block; width: 33%;}
+
+.last-line {font-size: 15px;}
+
+.Field {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #d3d1d1;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #d3d1d1;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #d3d1d1;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #d3d1d1;
+}
+
+
+
+.indent {
+    padding-left:10px;
+}
+
+.search-flext {
+    border-left: 1px solid #d3d1d1;
+    
+    border-top-left-radius: 5px 5px;
+    -moz-border-radius-topleft: 5px 5px;
+    -webkit-border-top-left-radius: 5px 5px;
+
+    border-bottom-left-radius: 5px 5px;
+    -webkit-border-bottom-left-radius: 5px 5px;
+    -moz-border-radius-bottomleft: 5px 5px;
+
+}
+
+.flext-field {
+    flex: 1 0 8em;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+    border-right: none;
+    box-shadow: none;
+    height: 60px;
+    box-shadow: none;
+    background: #fff;
+    outline: none;
+    font-size: 20px;
+    font: "Roboto Condensed";
+    box-shadow: 1px 1px 1px #dddddd;
+    color: #ccc;
+    padding-left:20px;
+}
+
+.misc-flext {
+    border-left: none;
+}
+
+.search-btn {
+    height: 60px;
+    background: #fff; 
+    box-shadow: 1px 1px 1px #dddddd;
+
+    border-right: 1px solid #d3d1d1;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+
+    border-top-right-radius: 5px 5px;
+    -moz-border-radius-topright: 5px 5px;
+    -webkit-border-top-right-radius: 5px 5px;
+
+    border-bottom-right-radius: 5px 5px;
+    -moz-border-radius-bottomright: 5px 5px;
+    -webkit-border-bottom-right-radius: 5px 5px;
+
+    border-top-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+
+    border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+
+}
+
+.fa-search {
+  color: #d3d1d1;
+}
+
+.Field-is-search:before {
+  /* Don't shrink or grow and use a default size */
+  flex: 0 0 2.75em;
+
+  /* ... */
+    // Use flexbox to center the icon
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline {
+   display:inline-block;
+   margin-right:5px;
+   align: center;
+}
+
+.inline-results {
+    display:inline-block;
+   align: center;
+   margin-right: auto;
+   margin-left: auto;
+
+}
+
+.results-align {
+    text-align: center;
+  flex: 0 0 2.75em;
+    
+  /* ... */
+    // Use flexbox to center the icon
+  display: block;
+  align-items: center;
+  justify-content: center;
+      margin: 0 auto; /* Added */
+     /* Added */
+}
+
+.align-search{
+    float: center;
+}
+
+.card {
+    border: 1px solid #d3d1d1;
+    border-top-right-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;
+    padding: 10px;
+
+    margin-bottom: 10px;
+    
+    height:150px;
+}
+
+.card-block {
+    margin-left: 60px;
+}
+
+.popover-content {
+    width:25rem;
+}
+
+
+.text-left {
+    text-align: left;
+}
+
+.slide-image {
+      height: auto;
+      display: block;
+      overflow: visible;
+      width: 400px;
+      margin-right: auto;
+      margin-left: auto;
+      float: none;
+}
+
+.card-img-left {
+    float: left;
+}
+
+button:focus {outline:0;}
+a:link {color:#000000;}
+
+.results {
+    display: inline;
+}
+
+
+
+
+.navbar-custom {
+    border: 1px solid #dddddd ;
+    border-radius:5px;
+    padding:4px;
+    margin-right:5px;
+    box-shadow: 1px 1px 1px #dddddd;
+
+}
