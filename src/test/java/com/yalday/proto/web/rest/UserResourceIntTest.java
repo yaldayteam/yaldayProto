@@ -1,6 +1,7 @@
 package com.yalday.proto.web.rest;
 
 import com.yalday.proto.YaldayProtoApp;
+import com.yalday.proto.domain.enumeration.Type;
 import com.yalday.proto.domain.Authority;
 import com.yalday.proto.domain.User;
 import com.yalday.proto.repository.UserRepository;
@@ -73,6 +74,9 @@ public class UserResourceIntTest {
     private static final String DEFAULT_LANGKEY = "en";
     private static final String UPDATED_LANGKEY = "fr";
 
+    private static final Type DEFAULT_USERTYPE = Type.customer;
+    private static final Type UPDATED_USERTYPE = Type.merchant;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -125,6 +129,7 @@ public class UserResourceIntTest {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setUserType(DEFAULT_USERTYPE);
         return user;
     }
 
@@ -151,6 +156,7 @@ public class UserResourceIntTest {
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
+            DEFAULT_USERTYPE,
             null,
             null,
             null,
@@ -172,6 +178,7 @@ public class UserResourceIntTest {
         assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+        assertThat(testUser.getUserType()).isEqualTo(DEFAULT_USERTYPE);
     }
 
     @Test
@@ -190,6 +197,7 @@ public class UserResourceIntTest {
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
+            DEFAULT_USERTYPE,
             null,
             null,
             null,
@@ -225,6 +233,7 @@ public class UserResourceIntTest {
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
+            DEFAULT_USERTYPE,
             null,
             null,
             null,
@@ -260,6 +269,7 @@ public class UserResourceIntTest {
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
+            DEFAULT_USERTYPE,
             null,
             null,
             null,
@@ -293,6 +303,7 @@ public class UserResourceIntTest {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
+            //.andExpect(jsonPath("$.[*].userType").value(hasItem(DEFAULT_USERTYPE)));
     }
 
     @Test
@@ -310,6 +321,7 @@ public class UserResourceIntTest {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
+            //.andExpect(jsonPath("$.userType").value(DEFAULT_USERTYPE));
     }
 
     @Test
@@ -339,6 +351,7 @@ public class UserResourceIntTest {
             updatedUser.getActivated(),
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
+            UPDATED_USERTYPE,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -359,6 +372,7 @@ public class UserResourceIntTest {
         assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
+        assertThat(testUser.getUserType()).isEqualTo(UPDATED_USERTYPE);
     }
 
     @Test
@@ -382,6 +396,7 @@ public class UserResourceIntTest {
             updatedUser.getActivated(),
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
+            UPDATED_USERTYPE,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -403,6 +418,7 @@ public class UserResourceIntTest {
         assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
+        assertThat(testUser.getUserType()).isEqualTo(UPDATED_USERTYPE);
     }
 
     @Test
@@ -419,6 +435,7 @@ public class UserResourceIntTest {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setUserType(DEFAULT_USERTYPE);
         userRepository.save(anotherUser);
 
         // Update the user
@@ -436,6 +453,7 @@ public class UserResourceIntTest {
             updatedUser.getActivated(),
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
+            updatedUser.getUserType(),
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -462,6 +480,7 @@ public class UserResourceIntTest {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setUserType(DEFAULT_USERTYPE);
         userRepository.save(anotherUser);
 
         // Update the user
@@ -479,6 +498,7 @@ public class UserResourceIntTest {
             updatedUser.getActivated(),
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
+            updatedUser.getUserType(),
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -549,6 +569,7 @@ public class UserResourceIntTest {
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
+            DEFAULT_USERTYPE,
             DEFAULT_LOGIN,
             null,
             DEFAULT_LOGIN,
@@ -563,6 +584,7 @@ public class UserResourceIntTest {
         assertThat(user.getActivated()).isEqualTo(true);
         assertThat(user.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(user.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+        //assertThat(user.getUserType()).isEqualTo(DEFAULT_USERTYPE);
         assertThat(user.getCreatedBy()).isNull();
         assertThat(user.getCreatedDate()).isNotNull();
         assertThat(user.getLastModifiedBy()).isNull();
@@ -594,6 +616,7 @@ public class UserResourceIntTest {
         assertThat(userDTO.isActivated()).isEqualTo(true);
         assertThat(userDTO.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+        assertThat(userDTO.getUserType()).isEqualTo(DEFAULT_USERTYPE);
         assertThat(userDTO.getCreatedBy()).isEqualTo(DEFAULT_LOGIN);
         assertThat(userDTO.getCreatedDate()).isEqualTo(user.getCreatedDate());
         assertThat(userDTO.getLastModifiedBy()).isEqualTo(DEFAULT_LOGIN);
