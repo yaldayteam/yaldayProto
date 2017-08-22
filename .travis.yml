@@ -1,4 +1,5 @@
 deploy:
+  app: yaldayproto
   provider: heroku
   api_key:
     secure: "074b50b2-d947-467a-a659-9bd658f05b22"
