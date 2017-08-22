@@ -21,8 +21,12 @@ spring:
             enabled: false
     data:
         mongodb:
-            uri: mongodb://localhost:27017
-            database: yaldayProto
+            host: ds155473.mlab.com
+            port: 55473
+            database: yaldayproto
+            authentication-database: yaldayproto
+            username: yaldayinc
+            password: ${MLAB_PASS}
     mail:
         host: localhost
         port: 25
