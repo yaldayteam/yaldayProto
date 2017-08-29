@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.yalday.proto.domain.enumeration.Type;
+
+
 /**
  * A DTO representing a user, with his authorities.
  */
@@ -43,6 +46,8 @@ public class UserDTO {
     @Size(min = 2, max = 5)
     private String langKey;
 
+    private Type userType;
+
     private String createdBy;
 
     private Instant createdDate;
@@ -59,14 +64,14 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
+            user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(), user.getUserType(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()));
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
-        String email, boolean activated, String imageUrl, String langKey,
+        String email, boolean activated, String imageUrl, String langKey, Type userType,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
         Set<String> authorities) {
 
@@ -78,6 +83,7 @@ public class UserDTO {
         this.activated = activated;
         this.imageUrl = imageUrl;
         this.langKey = langKey;
+        this.userType = userType;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;
@@ -125,6 +131,8 @@ public class UserDTO {
         return langKey;
     }
 
+    public Type getUserType() { return userType; }
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -159,6 +167,7 @@ public class UserDTO {
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
+            ", userType='" + userType + '\'' +
             ", createdBy=" + createdBy +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

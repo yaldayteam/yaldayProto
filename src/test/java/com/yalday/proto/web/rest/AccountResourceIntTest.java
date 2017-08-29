@@ -8,6 +8,7 @@ import com.yalday.proto.repository.AuthorityRepository;
 import com.yalday.proto.repository.PersistentTokenRepository;
 import com.yalday.proto.repository.UserRepository;
 import com.yalday.proto.security.AuthoritiesConstants;
+import com.yalday.proto.domain.enumeration.Type;
 import com.yalday.proto.service.MailService;
 import com.yalday.proto.service.UserService;
 import com.yalday.proto.service.dto.UserDTO;
@@ -131,6 +132,7 @@ public class AccountResourceIntTest {
         user.setEmail("john.doe@jhipster.com");
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("en");
+        user.setUserType(Type.customer);
         user.setAuthorities(authorities);
         when(mockUserService.getUserWithAuthorities()).thenReturn(user);
 
@@ -144,6 +146,7 @@ public class AccountResourceIntTest {
             .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
             .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
             .andExpect(jsonPath("$.langKey").value("en"))
+            //.andExpect(jsonPath("$.userType").value(Type.customer))
             .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
     }
 
@@ -167,7 +170,8 @@ public class AccountResourceIntTest {
             "joe@example.com",      // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,             // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -195,7 +199,8 @@ public class AccountResourceIntTest {
             "funky@example.com",    // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,              // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -224,6 +229,7 @@ public class AccountResourceIntTest {
             true,               // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -252,6 +258,7 @@ public class AccountResourceIntTest {
             true,               // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -279,7 +286,8 @@ public class AccountResourceIntTest {
             "bob@example.com",  // email
             true,               // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -308,7 +316,8 @@ public class AccountResourceIntTest {
             "alice@example.com",    // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -317,7 +326,7 @@ public class AccountResourceIntTest {
 
         // Duplicate login, different email
         ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
-            "alicejr@example.com", true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+            "alicejr@example.com", true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getUserType(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
 
         // Good user
         restMvc.perform(
@@ -349,7 +358,8 @@ public class AccountResourceIntTest {
             "john@example.com",     // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,          // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -358,8 +368,7 @@ public class AccountResourceIntTest {
 
         // Duplicate email, different login
         ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
-            validUser.getEmail(), true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
-
+            validUser.getEmail(), true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getUserType(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
         // Good user
         restMvc.perform(
             post("/api/register")
@@ -389,7 +398,8 @@ public class AccountResourceIntTest {
             "badguy@example.com",   // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
+            "en",
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -453,6 +463,7 @@ public class AccountResourceIntTest {
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -471,6 +482,7 @@ public class AccountResourceIntTest {
         assertThat(updatedUser.getLastName()).isEqualTo(userDTO.getLastName());
         assertThat(updatedUser.getEmail()).isEqualTo(userDTO.getEmail());
         assertThat(updatedUser.getLangKey()).isEqualTo(userDTO.getLangKey());
+        assertThat(updatedUser.getUserType()).isEqualTo(userDTO.getUserType());
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
         assertThat(updatedUser.getImageUrl()).isEqualTo(userDTO.getImageUrl());
         assertThat(updatedUser.getActivated()).isEqualTo(true);
@@ -497,6 +509,7 @@ public class AccountResourceIntTest {
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -541,6 +554,7 @@ public class AccountResourceIntTest {
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
@@ -578,6 +592,7 @@ public class AccountResourceIntTest {
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
+            Type.customer,           // langKey
             null,                   // createdBy
             null,                   // createdDate
             null,                   // lastModifiedBy
