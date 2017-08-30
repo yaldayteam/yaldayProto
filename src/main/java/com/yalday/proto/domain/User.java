@@ -20,6 +20,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.time.Instant;
 
+import com.yalday.proto.domain.enumeration.Type;
+
 /**
  * A user.
  */
@@ -78,6 +80,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Field("reset_date")
     private Instant resetDate = null;
+
+    @Field("usertype")
+    private Type userType;
 
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
@@ -186,6 +191,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
+    public Type getUserType() { return userType;}
+
+    public User userType(Type userType){
+        this.userType = userType;
+        return this;
+    }
+
+    public void setUserType(Type userType) { this.userType = userType; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -215,6 +229,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", userType='" + userType + '\'' +
             "}";
     }
 }
