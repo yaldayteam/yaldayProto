@@ -25,6 +25,19 @@
             if (vm.registerAccount.password !== vm.confirmPassword) {
                 vm.doNotMatch = 'ERROR';
             } else {
+
+
+           if(vm.userType == true )
+                    {
+                        vm.registerAccount.userType = 'merchant';
+                    }
+                    else
+                    {
+                        vm.registerAccount.userType = 'customer';
+                    }
+
+
+
                 vm.registerAccount.langKey =  'en' ;
                 vm.doNotMatch = null;
                 vm.error = null;
