@@ -40,7 +40,15 @@
         <div class="" ui-view="content"></div>
     </div>
 
-    <!--div class="footer" ui-view="footer" ng-cloak></div-->
+    <!--footer class="footer" ui-view="footer" ng-cloak>
+        <div class="container" ui-view="content"></div>
+
+    </footer-->
+
+     <div id="footer">
+        <div class="container" ui-view="footer"></div>
+    </div>
+
 
     <noscript>
         <h1>You must enable javascript to view this page.</h1>
@@ -103,6 +111,8 @@
     <script src="app/services/auth/auth.service.js"></script>
     <script src="app/services/auth/activate.service.js"></script>
     <script src="app/services/auth/account.service.js"></script>
+    <script src="app/merchantHome/merchantHome.state.js"></script>
+    <script src="app/merchantHome/merchantHome.controller.js"></script>
     <script src="app/layouts/search/search.state.js"></script>
     <script src="app/layouts/search/search.controller.js"></script>
     <script src="app/layouts/search/results.controller.js"></script>
@@ -181,6 +191,7 @@
     <script src="app/account/reset/finish/reset.finish.controller.js"></script>
     <script src="app/account/register/register.state.js"></script>
     <script src="app/account/register/register.controller.js"></script>
+    <script src="app/account/register/init_register.service.js"></script>
     <script src="app/account/password/password-strength-bar.directive.js"></script>
     <script src="app/account/password/password.state.js"></script>
     <script src="app/account/password/password.controller.js"></script>

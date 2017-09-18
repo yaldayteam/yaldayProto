@@ -23,7 +23,8 @@
                     templateUrl: 'app/layouts/search/search.html',
                     controller: 'SearchController',
                     controllerAs: 'vm'
-                }
+                },
+
             },
             resolve: {
                 authorize: ['Auth',

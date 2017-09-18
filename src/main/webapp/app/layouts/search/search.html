@@ -19,7 +19,7 @@
 				ng-click="vm.openCalendar('bookingDate')"	
 				datepicker-options="{showWeeks: false}"			
 				/> 
-			<a ui-sref="search">
+			<a ui-sref="results">
 			<!--button type="submit" class="btn search-btn" ng-click="vm.goSearch()" ui-sref="search"><span class="fa fa-search"></span></button-->
 			<button type="submit" class="btn search-btn" ng-click="vm.goSearch()"><span class="fa fa-search"></span></button>
 			</a>
@@ -27,3 +27,6 @@
 	</div>
 </div>
 <br>
+<div class="container-fluid" ng-cloak>
+    <div class="" ui-view="results"></div>
+</div>
