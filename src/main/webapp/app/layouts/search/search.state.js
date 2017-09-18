@@ -8,19 +8,21 @@
     stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider) {
-        $stateProvider.state('search', {
+        $stateProvider
+        .state('results', {
             parent: 'app',
-            url: '/search',
+            url: '/results',
             data: {
                 authorities: []
             },
             views: {
-                'content@': {
+                'results': {
                     templateUrl: 'app/layouts/search/results.html',
                     controller: 'ResultsController',
                     controllerAs: 'vm'
                 },
-            }/*removed as it is now causing an error whereas in previous iterations it worked fine. Worth investigating.
+            }
+            /*removed as it is now causing an error whereas in previous iterations it worked fine. Worth investigating.
             ,
             resolve: {
                 authorize: ['Auth',

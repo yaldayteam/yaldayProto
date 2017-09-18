@@ -6,9 +6,9 @@
         .controller('RegisterController', RegisterController);
 
 
-    RegisterController.$inject = [ '$timeout', 'Auth', 'LoginService'];
+    RegisterController.$inject = [ '$timeout', 'Auth', 'LoginService', '$uibModalInstance'];
 
-    function RegisterController ($timeout, Auth, LoginService) {
+    function RegisterController ($timeout, Auth, LoginService, $uibModalInstance) {
         var vm = this;
 
         vm.doNotMatch = null;
@@ -18,8 +18,14 @@
         vm.register = register;
         vm.registerAccount = {};
         vm.success = null;
+        vm.cancel = cancel;
 
         $timeout(function (){angular.element('#login').focus();});
+
+        function cancel () {
+            vm.authenticationError = false;
+            $uibModalInstance.dismiss('cancel');
+        }
 
         function register () {
             if (vm.registerAccount.password !== vm.confirmPassword) {
