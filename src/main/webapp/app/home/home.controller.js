@@ -16,6 +16,13 @@
         vm.register = register;
         $scope.$on('authenticationSuccess', function() {
             getAccount();
+            console.log('Thinking about whether to go to merchant state or not');
+            if (vm.account.userType === 'merchant') {
+                console.log('Going to merchant state')
+                $state.go('merchantHome');
+            } else {
+                console.log('Not going to merchant state');
+            }
         });
 
         getAccount();
