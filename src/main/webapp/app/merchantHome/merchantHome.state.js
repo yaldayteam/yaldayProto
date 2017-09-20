@@ -48,6 +48,18 @@
                 }
             }
         })
+        .state('merchantHome.signup', {
+             parent: 'merchantHome',
+             url: '/signUp',
+             data: {
+                  authorities: []
+              },
+                    views: {
+                        'manageType@merchantHome': {
+                            templateUrl: 'app/merchantHome/merchantSignUp.html'
+                        }
+                    }
+                })
         .state('merchantHome.service', {
             parent: 'merchantHome',
             url: '/myServices',
