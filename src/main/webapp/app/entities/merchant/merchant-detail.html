@@ -1,0 +1,63 @@
+
+<div>
+    <h2><span>Merchant</span> {{vm.merchant.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{vm.merchant.name}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{vm.merchant.description}}</span>
+        </dd>
+        <dt><span>Address</span></dt>
+        <dd>
+            <span>{{vm.merchant.address}}</span>
+        </dd>
+        <dt><span>City</span></dt>
+        <dd>
+            <span>{{vm.merchant.city}}</span>
+        </dd>
+        <dt><span>Postcode</span></dt>
+        <dd>
+            <span>{{vm.merchant.postcode}}</span>
+        </dd>
+        <dt><span>Country</span></dt>
+        <dd>
+            <span>{{vm.merchant.country}}</span>
+        </dd>
+        <dt><span>Category</span></dt>
+        <dd>
+            <span>{{vm.merchant.category}}</span>
+        </dd>
+        <dt><span>Bg Color</span></dt>
+        <dd>
+            <span>{{vm.merchant.bgColor}}</span>
+        </dd>
+        <dt><span>Text Color</span></dt>
+        <dd>
+            <span>{{vm.merchant.textColor}}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+            <span>{{vm.merchant.email}}</span>
+        </dd>
+        <dt><span>Phone Number</span></dt>
+        <dd>
+            <span>{{vm.merchant.phoneNumber}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="merchant-detail.edit({id:vm.merchant.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>
