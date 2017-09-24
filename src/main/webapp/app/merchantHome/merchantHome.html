@@ -1,6 +1,6 @@
 <br>
 <div class="col-md-3 col-md-offset-2">
-	<ul class="" id="manageList" >
+    <ul class="" id="manageList" >
         <li ui-sref-active="#">
             <a ui-sref="merchantHome.booking">Bookings</a>
         </li>
@@ -12,8 +12,21 @@
         </li>
     </ul>
 </div>
+<div class="container-fluid col-md-8">
+    <div class="row">
+        <div class="col-xs-4 no-padding-left">
+            <button class="btn btn-primary" ui-sref="merchantHome.new" >
+                <span class="glyphicon glyphicon-plus"></span>
+                <span >
+                        Create new Merchant
+                    </span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="col-md-6">
-	<div class="container-fluid" ng-cloak>
+    <div class="container-fluid" ng-cloak>
         <div class="" ui-view="manageType"></div>
     </div>
 </div>

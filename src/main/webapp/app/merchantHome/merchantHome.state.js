@@ -48,6 +48,56 @@
                 }
             }
         })
+        .state('merchantHome.signup', {
+             parent: 'merchantHome',
+             url: '/signUp',
+             data: {
+                  authorities: []
+              },
+                    views: {
+                        'manageType@merchantHome': {
+                            templateUrl: 'app/merchantHome/merchantSignUp.html'
+                        }
+                    }
+                })
+          .state('merchantHome.new', {
+                    parent: 'merchantHome',
+                    url: '/new',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/merchant/merchant-dialog.html',
+                            controller: 'MerchantDialogController',
+                            controllerAs: 'vm',
+                            backdrop: 'static',
+                            size: 'lg',
+                            resolve: {
+                                entity: function () {
+                                    return {
+                                        name: null,
+                                        description: null,
+                                        address: null,
+                                        city: null,
+                                        postcode: null,
+                                        country: null,
+                                        category: null,
+                                        bgColor: null,
+                                        textColor: null,
+                                        email: null,
+                                        phoneNumber: null,
+                                        id: null
+                                    };
+                                }
+                            }
+                        }).result.then(function() {
+                            $state.go('merchantHome', null, { reload: 'merchantHome' });
+                        }, function() {
+                            $state.go('merchantHome');
+                        });
+                    }]
+                })
         .state('merchantHome.service', {
             parent: 'merchantHome',
             url: '/myServices',

@@ -1,14 +1,14 @@
 (function() {
-    'use strict';
+         'use strict';
 
-    angular
-        .module('yaldayProtoApp')
-        .controller('merchantHomeController', merchantHomeController);
+         angular
+             .module('yaldayProtoApp')
+             .controller('merchantHomeController', merchantHomeController);
 
-    merchantHomeController.$inject = ['$scope', '$state'];
+         merchantHomeController.$inject = ['$scope', '$state'];
 
-    function merchantHomeController ($scope, $state) {
-        var vm = this;
+         function merchantHomeController ($scope, $state) {
+             var vm = this;
 
-    }
-})();
+         }
+     })();
