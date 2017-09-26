@@ -119,7 +119,7 @@
                 <div class="form-group">
                     <span class="badge accType">
                         <h5>Please tick box if you are signing up as a Merchant</h5>
-                        <input type='checkbox merchTick' value="userType" id=type ng-model="vm.userType" name="userType" size="large">
+                        <input class=“merchTick” type='checkbox' value="userType" id=type ng-model="vm.userType" name="userType" size="large">
                     </span>
                 </div>
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Register</button>
@@ -134,7 +134,7 @@
             <jh-social ng-provider="google"></jh-social>
             <jh-social ng-provider="facebook"></jh-social>
             <jh-social ng-provider="twitter"></jh-social>
-          
+
         </div>
     </div>
 </div>
