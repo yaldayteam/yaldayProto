@@ -1,6 +1,7 @@
 package com.yalday.proto.service;
 
 import com.yalday.proto.domain.Authority;
+import com.yalday.proto.domain.Merchant;
 import com.yalday.proto.domain.User;
 import com.yalday.proto.repository.AuthorityRepository;
 import com.yalday.proto.repository.PersistentTokenRepository;
@@ -117,6 +118,37 @@ public class UserService {
         return newUser;
     }
 
+    public User createUser(String login, String password, String firstName, String lastName, String email,
+                           String imageUrl, String langKey, Type userType, List<Merchant> merchants) {
+
+        User newUser = new User();
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Set<Authority> authorities = new HashSet<>();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(login);
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setImageUrl(imageUrl);
+        newUser.setLangKey(langKey);
+        newUser.setUserType(userType);
+        newUser.setMerchants(merchants);
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        authorities.add(authority);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        log.debug("Created Information for User: {}", newUser);
+        return newUser;
+    }
+
+
+
+
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -130,6 +162,7 @@ public class UserService {
             user.setLangKey(userDTO.getLangKey());
         }
         user.setUserType(userDTO.getUserType());
+        user.setMerchants(userDTO.getMerchants());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
             userDTO.getAuthorities().forEach(
@@ -157,13 +190,14 @@ public class UserService {
      * @param userType type of user
      * @param imageUrl image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, Type userType, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, Type userType, List<Merchant> merchants, String imageUrl) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
             user.setLangKey(langKey);
             user.setUserType(userType);
+            user.setMerchants(merchants);
             user.setImageUrl(imageUrl);
             userRepository.save(user);
             log.debug("Changed Information for User: {}", user);
@@ -188,6 +222,7 @@ public class UserService {
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 user.setUserType(userDTO.getUserType());
+                user.setMerchants(userDTO.getMerchants());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()

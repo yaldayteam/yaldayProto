@@ -2,11 +2,13 @@ package com.yalday.proto.web.rest.vm;
 
 
 
+import com.yalday.proto.domain.Merchant;
 import com.yalday.proto.domain.enumeration.Type;
 import com.yalday.proto.service.dto.UserDTO;
 import javax.validation.constraints.Size;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,15 +28,29 @@ public class ManagedUserVM extends UserDTO {
     }
 
     public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
+                         String email, boolean activated, String imageUrl, String langKey, Type userType, List<Merchant> merchant,
+                         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
+                         Set<String> authorities) {
+
+        super(id, login, firstName, lastName, email, activated, imageUrl, langKey, userType, merchant,
+            createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
+
+        this.password = password;
+    }
+
+
+    public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
                          String email, boolean activated, String imageUrl, String langKey, Type userType,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                        Set<String> authorities) {
+                         Set<String> authorities) {
 
         super(id, login, firstName, lastName, email, activated, imageUrl, langKey, userType,
             createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
 
         this.password = password;
     }
+
+
 
     public String getPassword() {
         return password;

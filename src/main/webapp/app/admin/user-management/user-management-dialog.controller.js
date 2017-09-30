@@ -14,8 +14,9 @@
         vm.clear = clear;
         vm.languages = null;
         vm.save = save;
-        vm.user = entity;
 
+        vm.user = entity;
+        console.log(vm.user);
 
 
         function clear () {
@@ -34,6 +35,15 @@
         function save () {
             vm.isSaving = true;
             if (vm.user.id !== null) {
+                vm.user.email = 'no@mail';
+                vm.user.merchants = 'merchant';
+                vm.user.job ='merchant';
+                vm.user.merchants[0].merchant.name = 'bill';
+
+                console.log(vm.user);
+
+                vm.user.merchants[0].name = 'bob';
+
                 User.update(vm.user, onSaveSuccess, onSaveError);
             } else {
                 vm.user.langKey = 'en';
