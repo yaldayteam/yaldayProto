@@ -5,36 +5,28 @@
         .module('yaldayProtoApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
+    HomeController.$inject = ['$scope', '$state'];
 
-    function HomeController ($scope, Principal, LoginService, $state) {
+    function HomeController ($scope, $state) {
         var vm = this;
 
-        vm.account = null;
-        vm.isAuthenticated = null;
-        vm.login = LoginService.open;
-        vm.register = register;
-        $scope.$on('authenticationSuccess', function() {
-            getAccount();
-            console.log('Thinking about whether to go to merchant state or not');
-            if (vm.account.userType === 'merchant') {
-                console.log('Going to merchant state');
-                $state.go('merchantHome');
-            } else {
-                console.log('Not going to merchant state');
-            }
-        });
+        vm.goSearch = goSearch;
+        vm.datePickerOpenStatus = {};
+        vm.openCalendar = openCalendar;
+        vm.date = new Date();  
+        vm.datePickerOpenStatus.bookingDate = false;
 
-        getAccount();
+        function openCalendar (date) {
+            vm.datePickerOpenStatus[date] = true;
+                        console.log('calendar!');
 
-        function getAccount() {
-            Principal.identity().then(function(account) {
-                vm.account = account;
-                vm.isAuthenticated = Principal.isAuthenticated;
-            });
         }
-        function register () {
-            $state.go('register');
+
+        function goSearch() {
+            $state.go('results');
+            vm.searchtext = '';
+            console.log('search!' + $state.current.name);
         }
+
     }
-})();
+})();   

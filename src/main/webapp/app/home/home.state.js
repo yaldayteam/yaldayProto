@@ -21,6 +21,22 @@
                     controllerAs: 'vm'
                 }
             }
-        });
+        })
+        .state('results', {
+            url: '/results',
+            parent: 'home',
+            data: {
+                authorities: []
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/home/results.html',
+                    controller: 'ResultsController',
+                    controllerAs: 'vm'
+                },
+            }
+        })
+
+        ;
     }
 })();

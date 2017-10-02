@@ -33,17 +33,8 @@
     <div ui-view="navbar" ng-cloak></div>
 
     <div class="container-fluid" ng-cloak>
-        <div ui-view="search"></div>
-    </div>
-
-    <div class="container-fluid" ng-cloak>
         <div class="" ui-view="content"></div>
     </div>
-
-    <!--footer class="footer" ui-view="footer" ng-cloak>
-        <div class="container" ui-view="content"></div>
-
-    </footer-->
 
      <div id="footer">
         <div class="container" ui-view="footer"></div>
@@ -113,13 +104,17 @@
     <script src="app/services/auth/account.service.js"></script>
     <script src="app/merchantHome/merchantHome.state.js"></script>
     <script src="app/merchantHome/merchantHome.controller.js"></script>
-    <script src="app/layouts/search/search.state.js"></script>
-    <script src="app/layouts/search/search.controller.js"></script>
-    <script src="app/layouts/search/results.controller.js"></script>
     <script src="app/layouts/navbar/navbar.controller.js"></script>
     <script src="app/layouts/error/error.state.js"></script>
+    <script src="app/home/results.controller.js"></script>
     <script src="app/home/home.state.js"></script>
     <script src="app/home/home.controller.js"></script>
+    <script src="app/entities/merchant/merchant-dialog.controller.js"></script>
+    <script src="app/entities/merchant/merchant-detail.controller.js"></script>
+    <script src="app/entities/merchant/merchant-delete-dialog.controller.js"></script>
+    <script src="app/entities/merchant/merchant.state.js"></script>
+    <script src="app/entities/merchant/merchant.service.js"></script>
+    <script src="app/entities/merchant/merchant.controller.js"></script>
     <script src="app/entities/entity.state.js"></script>
     <script src="app/components/util/truncate-words.filter.js"></script>
     <script src="app/components/util/truncate-characters.filter.js"></script>
@@ -198,12 +193,6 @@
     <script src="app/account/activate/activate.state.js"></script>
     <script src="app/account/activate/activate.controller.js"></script>
     <script src="app/account/account.state.js"></script>
-    <script src="app/entities/merchant/merchant.controller.js"></script>
-    <script src="app/entities/merchant/merchant.service.js"></script>
-    <script src="app/entities/merchant/merchant.state.js"></script>
-    <script src="app/entities/merchant/merchant-delete-dialog.controller.js"></script>
-    <script src="app/entities/merchant/merchant-detail.controller.js"></script>
-    <script src="app/entities/merchant/merchant-dialog.controller.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 
