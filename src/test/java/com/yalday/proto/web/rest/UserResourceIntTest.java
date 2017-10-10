@@ -1,6 +1,7 @@
 package com.yalday.proto.web.rest;
 
 import com.yalday.proto.YaldayProtoApp;
+import com.yalday.proto.domain.Merchant;
 import com.yalday.proto.domain.enumeration.Type;
 import com.yalday.proto.domain.Authority;
 import com.yalday.proto.domain.User;
@@ -22,18 +23,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.social.twitter.api.UserList;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -120,6 +118,19 @@ public class UserResourceIntTest {
      * if they test an entity which has a required relationship to the User entity.
      */
     public static User createEntity() {
+
+        Merchant merchant = new Merchant();
+        merchant.setName("Test Merchant");
+        merchant.setDescription("Not the same");
+        merchant.setAddress("Test Address");
+        merchant.setBackgroundColor("Test background color");
+        merchant.setCategory("Test Category");
+        merchant.setCity("Test City");
+        merchant.setEmail("Test Email");
+
+
+        List<Merchant> merchants = new ArrayList<Merchant>();
+        merchants.add(merchant);
         User user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));
@@ -130,18 +141,35 @@ public class UserResourceIntTest {
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
         user.setUserType(DEFAULT_USERTYPE);
+        user.setMerchants(merchants); //set to null
         return user;
     }
 
     @Before
     public void initTest() {
         userRepository.deleteAll();
-        user = createEntity();
+        user = createEntity(); //creates with no merchant list
+
     }
 
     @Test
     public void createUser() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
+
+
+        Merchant merchant = new Merchant();
+        merchant.setName("Test Merchant");
+        merchant.setDescription("Test Decription");
+        merchant.setAddress("Test Address");
+        merchant.setBackgroundColor("Test background color");
+        merchant.setCategory("Test Category");
+        merchant.setCity("Test City");
+        merchant.setEmail("Test Email");
+
+
+        List<Merchant> merchants = new ArrayList<Merchant>();
+        merchants.add(merchant);
+
 
         // Create the User
         Set<String> authorities = new HashSet<>();
@@ -157,6 +185,7 @@ public class UserResourceIntTest {
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
             DEFAULT_USERTYPE,
+            merchants,
             null,
             null,
             null,
@@ -202,6 +231,7 @@ public class UserResourceIntTest {
             null,
             null,
             null,
+            null,
             authorities);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -238,6 +268,7 @@ public class UserResourceIntTest {
             null,
             null,
             null,
+            null,
             authorities);
 
         // Create the User
@@ -270,6 +301,7 @@ public class UserResourceIntTest {
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
             DEFAULT_USERTYPE,
+            null,
             null,
             null,
             null,
@@ -352,6 +384,7 @@ public class UserResourceIntTest {
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
             UPDATED_USERTYPE,
+            null,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -397,6 +430,7 @@ public class UserResourceIntTest {
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
             UPDATED_USERTYPE,
+            null,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -454,6 +488,7 @@ public class UserResourceIntTest {
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
             updatedUser.getUserType(),
+            null,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -499,6 +534,7 @@ public class UserResourceIntTest {
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
             updatedUser.getUserType(),
+            null,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -570,6 +606,7 @@ public class UserResourceIntTest {
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
             DEFAULT_USERTYPE,
+            null,
             DEFAULT_LOGIN,
             null,
             DEFAULT_LOGIN,
@@ -647,5 +684,87 @@ public class UserResourceIntTest {
         assertThat(authorityA).isEqualTo(authorityB);
         assertThat(authorityA.hashCode()).isEqualTo(authorityB.hashCode());
     }
+
+
+    @Test
+    public void updateUserMerchant() throws Exception {
+
+
+        // Initialize the database
+        userRepository.save(user);
+        int databaseSizeBeforeUpdate = userRepository.findAll().size();
+
+
+        // Update the user
+        User updatedUser = userRepository.findOne(user.getId());
+
+        Set<String> authorities = new HashSet<>();
+        authorities.add("ROLE_USER");
+
+
+        Merchant merchant = new Merchant();
+        merchant.setName("Test Merchant");
+        merchant.setDescription("Test Decription");
+        merchant.setAddress("Test Address");
+        merchant.setBackgroundColor("Test background color");
+        merchant.setCategory("Test Category");
+        merchant.setCity("Test City");
+        merchant.setEmail("Test Email");
+
+
+
+        List<Merchant> merchants = new ArrayList<Merchant>();
+        merchants.add(merchant);
+
+
+
+        ManagedUserVM managedUserVM = new ManagedUserVM(
+            updatedUser.getId(),
+            UPDATED_LOGIN,
+            UPDATED_PASSWORD,
+            UPDATED_FIRSTNAME,
+            UPDATED_LASTNAME,
+            UPDATED_EMAIL,
+            updatedUser.getActivated(),
+            UPDATED_IMAGEURL,
+            UPDATED_LANGKEY,
+            UPDATED_USERTYPE,
+            merchants,
+            updatedUser.getCreatedBy(),
+            updatedUser.getCreatedDate(),
+            updatedUser.getLastModifiedBy(),
+            updatedUser.getLastModifiedDate(),
+            authorities);
+
+
+        restUserMockMvc.perform(put("/api/users")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .andExpect(status().isOk());
+
+
+
+        // Validate the User in the database
+        List<User> userList = userRepository.findAll();
+        assertThat(userList).hasSize(databaseSizeBeforeUpdate);
+        User testUser = userList.get(userList.size() - 1);
+        assertThat(testUser.getLogin()).isEqualTo(UPDATED_LOGIN);
+        assertThat(testUser.getFirstName()).isEqualTo(UPDATED_FIRSTNAME);
+        assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
+        assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
+        assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
+        assertThat(testUser.getMerchants().get(0).getName().equals(merchants.get(0).getName()));
+        assertThat(testUser.getMerchants().get(0).getDescription().equals(merchants.get(0).getDescription()));
+        assertThat(testUser.getMerchants().get(0).getAddress().equals(merchants.get(0).getAddress()));
+        assertThat(testUser.getMerchants().get(0).getBackgroundColor().equals(merchants.get(0).getBackgroundColor()));
+        assertThat(testUser.getMerchants().get(0).getCategory().equals(merchants.get(0).getCategory()));
+        assertThat(testUser.getMerchants().get(0).getCity().equals(merchants.get(0).getCity()));
+        assertThat(testUser.getMerchants().get(0).getEmail().equals(merchants.get(0).getEmail()));
+
+
+
+    }
+
 
 }

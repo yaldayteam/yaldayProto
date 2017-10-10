@@ -8,7 +8,11 @@
             <a ui-sref="merchantHome.service">Services</a>
         </li>
         <li ui-sref-active="#">
-            <a ui-sref="merchantHome.resource">Resources</a>
+        <a ui-sref="merchantHome.resource">Resources</a>
+        </li>
+        <li ui-sref-active="#">
+            <a ui-sref="merchantHome.resource">{{vm.user}}</a>
+            {{vm.user.name}}
         </li>
     </ul>
 </div>

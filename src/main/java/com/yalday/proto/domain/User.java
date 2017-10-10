@@ -20,6 +20,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.time.Instant;
 
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import com.yalday.proto.domain.enumeration.Type;
 
 /**
@@ -83,6 +89,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Field("usertype")
     private Type userType;
+
+    private List<Merchant> merchants;
 
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
@@ -198,6 +206,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public void setMerchants(List<Merchant> merchants){
+        this.merchants = merchants;
+    }
+
+    public List<Merchant> getMerchants(){
+        return this.merchants;
+    }
+
     public void setUserType(Type userType) { this.userType = userType; }
 
     @Override
@@ -220,16 +236,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            ", userType='" + userType + '\'' +
-            "}";
+        ObjectMapper mapper = new ObjectMapper();
+
+        String jsonString = "";
+        try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            jsonString = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return jsonString;
     }
 }
