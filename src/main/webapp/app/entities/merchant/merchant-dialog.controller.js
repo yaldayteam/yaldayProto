@@ -30,7 +30,7 @@
 
             } else {
                 Merchant.save(vm.merchant, onSaveSuccess, onSaveError);
-                vm.user.merchants = [{address:vm.merchant.address,
+               /* vm.user.merchants = [{address:vm.merchant.address,
                                     bgColor:vm.merchant.bgColor,
                                     category:vm.merchant.category,
                                     city:vm.merchant.city,
@@ -42,7 +42,7 @@
                                     phoneNumber:vm.merchant.phoneNumber,
                                     postcode:vm.merchant.postcode,
                                     textColor:vm.merchant.textColor,
-                                        }];
+                                        }];*/
 
 
                 Auth.updateAccount(vm.user).then(function() {

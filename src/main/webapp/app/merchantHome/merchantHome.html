@@ -1,4 +1,113 @@
 <br>
+
+<div class="col-md-8">
+
+    <div ng-switch="vm.isAuthenticated()">
+        <div class="alert alert-success" ng-switch-when="true">
+            You are logged in under the account "{{vm.account.login}}".
+        </div>
+        <div class="alert alert-success" ng-switch-when="true">
+            Welcome back "{{vm.account.firstName}}", this is your Business dashboard.
+        </div>
+
+
+    </div>
+
+    <div ng-switch="vm.account.merchant.id != null">
+
+        <div  ng-switch-when="true" >
+
+
+            <div>
+                <hr>
+                <jhi-alert-error></jhi-alert-error>
+                <dl class="dl-horizontal jh-entity-details">
+                    <dt><span>Name</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.name}}</span>
+                    </dd>
+                    <dt><span>Description</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.description}}</span>
+                    </dd>
+                    <dt><span>Address</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.address}}</span>
+                    </dd>
+                    <dt><span>City</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.city}}</span>
+                    </dd>
+                    <dt><span>Postcode</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.postcode}}</span>
+                    </dd>
+                    <dt><span>Country</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.country}}</span>
+                    </dd>
+                    <dt><span>Category</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.category}}</span>
+                    </dd>
+                    <dt><span>Background Color</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.backgroundColor}}</span>
+                    </dd>
+                    <dt><span>Email</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.email}}</span>
+                    </dd>
+                    <dt><span>Phonenumber</span></dt>
+                    <dd>
+                        <span>{{vm.account.merchant.phonenumber}}</span>
+                    </dd>
+                </dl>
+
+
+                <button type="button" ui-sref="merchantHome.edit({id:vm.account.merchant.id})" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span class="hidden-xs hidden-sm"> Edit</span>
+                </button>
+
+                <button type="submit"
+                                       ui-sref="merchantHome.delete({id:vm.account.merchant.id})"
+                                       class="btn btn-danger">
+                <span class="glyphicon glyphicon-remove-circle"></span>
+                <span class="hidden-xs hidden-sm"></span>
+            </button>
+
+            </div>
+
+        </div>
+
+
+        <div ng-switch-when="false" style="color:red">
+            <b> You have no merchant details </b>
+
+            <div class="container-fluid col-md-8">
+                <div class="row">
+                    <div class="col-xs-4 no-padding-left">
+                        <button class="btn btn-primary" ui-sref="merchantHome.new" >
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span >
+                            Add your business details
+                    </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+<br>
+
 <div class="col-md-3 col-md-offset-2">
     <ul class="" id="manageList" >
         <li ui-sref-active="#">
@@ -10,24 +119,12 @@
         <li ui-sref-active="#">
         <a ui-sref="merchantHome.resource">Resources</a>
         </li>
-        <li ui-sref-active="#">
-            <a ui-sref="merchantHome.resource">{{vm.user}}</a>
-            {{vm.user.name}}
-        </li>
     </ul>
 </div>
-<div class="container-fluid col-md-8">
-    <div class="row">
-        <div class="col-xs-4 no-padding-left">
-            <button class="btn btn-primary" ui-sref="merchantHome.new" >
-                <span class="glyphicon glyphicon-plus"></span>
-                <span >
-                        Create new Merchant
-                    </span>
-            </button>
-        </div>
-    </div>
-</div>
+
+
+
+
 
 <div class="col-md-6">
     <div class="container-fluid" ng-cloak>

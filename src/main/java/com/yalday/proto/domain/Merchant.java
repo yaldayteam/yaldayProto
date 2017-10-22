@@ -49,6 +49,25 @@ public class Merchant implements Serializable {
     @Field("phonenumber")
     private String phonenumber;
 
+    @Field("userid")
+    private String userid;
+
+
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public Merchant userid(String userid) {
+        this.userid = userid;
+        return this;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+
     public String getId() {
         return id;
     }
@@ -207,20 +226,21 @@ public class Merchant implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
+    @java.lang.Override
+    public java.lang.String toString() {
         return "Merchant{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            ", address='" + address + "'" +
-            ", city='" + city + "'" +
-            ", postcode='" + postcode + "'" +
-            ", country='" + country + "'" +
-            ", category='" + category + "'" +
-            ", backgroundColor='" + backgroundColor + "'" +
-            ", email='" + email + "'" +
-            ", phonenumber='" + phonenumber + "'" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", address='" + address + '\'' +
+            ", city='" + city + '\'' +
+            ", postcode='" + postcode + '\'' +
+            ", country='" + country + '\'' +
+            ", category='" + category + '\'' +
+            ", backgroundColor='" + backgroundColor + '\'' +
+            ", email='" + email + '\'' +
+            ", phonenumber='" + phonenumber + '\'' +
+            ", userid='" + userid + '\'' +
             '}';
     }
 }

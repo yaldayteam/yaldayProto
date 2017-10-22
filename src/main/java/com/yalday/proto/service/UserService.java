@@ -119,7 +119,7 @@ public class UserService {
     }
 
     public User createUser(String login, String password, String firstName, String lastName, String email,
-                           String imageUrl, String langKey, Type userType, List<Merchant> merchants) {
+                           String imageUrl, String langKey, Type userType, Merchant merchant) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -134,7 +134,7 @@ public class UserService {
         newUser.setImageUrl(imageUrl);
         newUser.setLangKey(langKey);
         newUser.setUserType(userType);
-        newUser.setMerchants(merchants);
+        newUser.setMerchant(merchant);
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -162,7 +162,7 @@ public class UserService {
             user.setLangKey(userDTO.getLangKey());
         }
         user.setUserType(userDTO.getUserType());
-        user.setMerchants(userDTO.getMerchants());
+        user.setMerchant(userDTO.getMerchant());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
             userDTO.getAuthorities().forEach(
@@ -190,19 +190,48 @@ public class UserService {
      * @param userType type of user
      * @param imageUrl image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, Type userType, List<Merchant> merchants, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, Type userType, Merchant merchant, String imageUrl) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
             user.setLangKey(langKey);
             user.setUserType(userType);
-            user.setMerchants(merchants);
+            user.setMerchant(merchant);
             user.setImageUrl(imageUrl);
             userRepository.save(user);
             log.debug("Changed Information for User: {}", user);
         });
     }
+
+
+    /**
+     * Update Merchant Information for the current user.
+     *
+     * @param merchants
+     *
+     */
+
+    public void updateUser(Merchant merchant) {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
+
+            user.setMerchant(merchant);
+            userRepository.save(user);
+
+            log.debug("Changed Merchant Information for User: {}", user);
+        });
+    }
+
+    public void deleteUserMerchant() {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
+
+            user.setMerchant(null);
+            userRepository.save(user);
+
+            log.debug("Changed Merchant Information for User: {}", user);
+        });
+    }
+
 
     /**
      * Update all information for a specific user, and return the modified user.
@@ -222,7 +251,7 @@ public class UserService {
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 user.setUserType(userDTO.getUserType());
-                user.setMerchants(userDTO.getMerchants());
+                user.setMerchant(userDTO.getMerchant());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()

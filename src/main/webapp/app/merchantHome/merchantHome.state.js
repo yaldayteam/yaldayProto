@@ -98,6 +98,55 @@
                         });
                     }]
                 })
+         .state('merchantHome.edit', {
+                    parent: 'merchantHome',
+                    url: '/detail/edit/:id',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/merchant/merchant-dialog.html',
+                            controller: 'MerchantDialogController',
+                            controllerAs: 'vm',
+                            backdrop: 'static',
+                            size: 'lg',
+                            resolve: {
+                                entity: ['Merchant', function(Merchant) {
+                                    return Merchant.get({id : $stateParams.id}).$promise;
+                                }]
+                            }
+                        }).result.then(function() {
+                             $state.go('merchantHome', null, { reload: 'merchantHome' });
+                             }, function() {
+                             $state.go('merchantHome', null, { reload: 'merchantHome' });
+                        });
+                    }]
+                })
+       .state('merchantHome.delete', {
+                           parent: 'merchantHome',
+                           url: '/delete/:id',
+                           data: {
+                               authorities: ['ROLE_USER']
+                           },
+                           onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                               $uibModal.open({
+                                   templateUrl: 'app/entities/merchant/merchant-delete-dialog.html',
+                                   controller: 'MerchantDeleteController',
+                                   controllerAs: 'vm',
+                                   size: 'md',
+                                   resolve: {
+                                       entity: ['Merchant', function(Merchant) {
+                                           return Merchant.get({id : $stateParams.id}).$promise;
+                                       }]
+                                   }
+                               }).result.then(function() {
+                                    $state.go('merchantHome', null, { reload: 'merchantHome' });
+                                    }, function() {
+                                    $state.go('merchantHome', null, { reload: 'merchantHome' });
+                               });
+                           }]
+                       })
         .state('merchantHome.service', {
             parent: 'merchantHome',
             url: '/myServices',

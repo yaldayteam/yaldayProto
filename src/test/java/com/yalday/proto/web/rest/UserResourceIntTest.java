@@ -129,8 +129,6 @@ public class UserResourceIntTest {
         merchant.setEmail("Test Email");
 
 
-        List<Merchant> merchants = new ArrayList<Merchant>();
-        merchants.add(merchant);
         User user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));
@@ -141,7 +139,7 @@ public class UserResourceIntTest {
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
         user.setUserType(DEFAULT_USERTYPE);
-        user.setMerchants(merchants); //set to null
+        user.setMerchant(merchant); //set to null
         return user;
     }
 
@@ -167,8 +165,6 @@ public class UserResourceIntTest {
         merchant.setEmail("Test Email");
 
 
-        List<Merchant> merchants = new ArrayList<Merchant>();
-        merchants.add(merchant);
 
 
         // Create the User
@@ -185,7 +181,7 @@ public class UserResourceIntTest {
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
             DEFAULT_USERTYPE,
-            merchants,
+            merchant,
             null,
             null,
             null,
@@ -713,8 +709,7 @@ public class UserResourceIntTest {
 
 
 
-        List<Merchant> merchants = new ArrayList<Merchant>();
-        merchants.add(merchant);
+
 
 
 
@@ -729,7 +724,7 @@ public class UserResourceIntTest {
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
             UPDATED_USERTYPE,
-            merchants,
+            merchant,
             updatedUser.getCreatedBy(),
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
@@ -754,13 +749,13 @@ public class UserResourceIntTest {
         assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
-        assertThat(testUser.getMerchants().get(0).getName().equals(merchants.get(0).getName()));
-        assertThat(testUser.getMerchants().get(0).getDescription().equals(merchants.get(0).getDescription()));
-        assertThat(testUser.getMerchants().get(0).getAddress().equals(merchants.get(0).getAddress()));
-        assertThat(testUser.getMerchants().get(0).getBackgroundColor().equals(merchants.get(0).getBackgroundColor()));
-        assertThat(testUser.getMerchants().get(0).getCategory().equals(merchants.get(0).getCategory()));
-        assertThat(testUser.getMerchants().get(0).getCity().equals(merchants.get(0).getCity()));
-        assertThat(testUser.getMerchants().get(0).getEmail().equals(merchants.get(0).getEmail()));
+        assertThat(testUser.getMerchant().getName().equals(merchant.getName()));
+        assertThat(testUser.getMerchant().getDescription().equals(merchant.getDescription()));
+        assertThat(testUser.getMerchant().getAddress().equals(merchant.getAddress()));
+        assertThat(testUser.getMerchant().getBackgroundColor().equals(merchant.getBackgroundColor()));
+        assertThat(testUser.getMerchant().getCategory().equals(merchant.getCategory()));
+        assertThat(testUser.getMerchant().getCity().equals(merchant.getCity()));
+        assertThat(testUser.getMerchant().getEmail().equals(merchant.getEmail()));
 
 
 

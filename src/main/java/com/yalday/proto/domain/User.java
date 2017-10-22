@@ -90,7 +90,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Field("usertype")
     private Type userType;
 
-    private List<Merchant> merchants;
+    private Merchant merchant;
+
 
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
@@ -206,13 +207,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setMerchants(List<Merchant> merchants){
-        this.merchants = merchants;
+    public void setMerchant(Merchant merchant){
+        this.merchant = merchant;
     }
 
-    public List<Merchant> getMerchants(){
-        return this.merchants;
+    public Merchant getMerchant(){
+        return this.merchant;
     }
+
+
+
 
     public void setUserType(Type userType) { this.userType = userType; }
 

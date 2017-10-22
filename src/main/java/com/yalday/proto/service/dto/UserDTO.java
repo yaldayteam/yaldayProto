@@ -53,7 +53,7 @@ public class UserDTO {
 
     private Type userType;
 
-    private List<Merchant> merchants;
+    private Merchant merchant;
 
     private String createdBy;
 
@@ -71,14 +71,14 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(), user.getUserType(), user.getMerchants(),
+            user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(), user.getUserType(), user.getMerchant(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()));
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
-                   String email, boolean activated, String imageUrl, String langKey, Type userType, List<Merchant> merchants,
+                   String email, boolean activated, String imageUrl, String langKey, Type userType, Merchant merchant,
                    String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
                    Set<String> authorities) {
 
@@ -91,7 +91,7 @@ public class UserDTO {
         this.imageUrl = imageUrl;
         this.langKey = langKey;
         this.userType = userType;
-        this.merchants = merchants;
+        this.merchant = merchant;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;
@@ -114,7 +114,7 @@ public class UserDTO {
         this.imageUrl = imageUrl;
         this.langKey = langKey;
         this.userType = userType;
-        this.merchants = merchants;
+        this.merchant = merchant;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;
@@ -165,12 +165,12 @@ public class UserDTO {
 
     public Type getUserType() { return userType; }
 
-    public List<Merchant> getMerchants() {
-        return merchants;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchants(List<Merchant> merchants) {
-        this.merchants = merchants;
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 
     public String getCreatedBy() {

@@ -31,6 +31,7 @@ public class MerchantDTO implements Serializable {
 
     private String phonenumber;
 
+    private String userid;
 
     public String getId() {
         return id;
@@ -102,6 +103,7 @@ public class MerchantDTO implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPhonenumber() {
         return phonenumber;
     }
@@ -109,6 +111,17 @@ public class MerchantDTO implements Serializable {
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
+
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -131,20 +144,21 @@ public class MerchantDTO implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
+    @java.lang.Override
+    public java.lang.String toString() {
         return "MerchantDTO{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            ", address='" + address + "'" +
-            ", city='" + city + "'" +
-            ", postcode='" + postcode + "'" +
-            ", country='" + country + "'" +
-            ", category='" + category + "'" +
-            ", backgroundColor='" + backgroundColor + "'" +
-            ", email='" + email + "'" +
-            ", phonenumber='" + phonenumber + "'" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", address='" + address + '\'' +
+            ", city='" + city + '\'' +
+            ", postcode='" + postcode + '\'' +
+            ", country='" + country + '\'' +
+            ", category='" + category + '\'' +
+            ", backgroundColor='" + backgroundColor + '\'' +
+            ", email='" + email + '\'' +
+            ", phonenumber='" + phonenumber + '\'' +
+            ", userid='" + userid + '\'' +
             '}';
     }
 }

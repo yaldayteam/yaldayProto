@@ -68,6 +68,9 @@ public class MerchantResourceIntTest {
     private static final String DEFAULT_PHONENUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONENUMBER = "BBBBBBBBBB";
 
+    private static final String DEFAULT_USERID = "AAAAAAA";
+    private static final String UPDATED_USERID = "BBBBBBB";
+
     @Inject
     private MerchantRepository merchantRepository;
 
@@ -114,7 +117,8 @@ public class MerchantResourceIntTest {
                 .category(DEFAULT_CATEGORY)
                 .backgroundColor(DEFAULT_BACKGROUND_COLOR)
                 .email(DEFAULT_EMAIL)
-                .phonenumber(DEFAULT_PHONENUMBER);
+                .phonenumber(DEFAULT_PHONENUMBER)
+                .userid(DEFAULT_USERID);
         return merchant;
     }
 
@@ -150,6 +154,7 @@ public class MerchantResourceIntTest {
         assertThat(testMerchant.getBackgroundColor()).isEqualTo(DEFAULT_BACKGROUND_COLOR);
         assertThat(testMerchant.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testMerchant.getPhonenumber()).isEqualTo(DEFAULT_PHONENUMBER);
+        assertThat(testMerchant.getUserid()).isEqualTo(DEFAULT_USERID);
     }
 
     @Test
@@ -171,7 +176,8 @@ public class MerchantResourceIntTest {
                 .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
                 .andExpect(jsonPath("$.[*].backgroundColor").value(hasItem(DEFAULT_BACKGROUND_COLOR.toString())))
                 .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-                .andExpect(jsonPath("$.[*].phonenumber").value(hasItem(DEFAULT_PHONENUMBER.toString())));
+                .andExpect(jsonPath("$.[*].phonenumber").value(hasItem(DEFAULT_PHONENUMBER.toString())))
+                .andExpect(jsonPath("$.[*].userid").value(hasItem(DEFAULT_USERID)));
     }
 
     @Test
@@ -193,7 +199,8 @@ public class MerchantResourceIntTest {
             .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()))
             .andExpect(jsonPath("$.backgroundColor").value(DEFAULT_BACKGROUND_COLOR.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
-            .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()));
+            .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()))
+            .andExpect(jsonPath("$.userid").value(hasItem(DEFAULT_USERID.toString())));
     }
 
     @Test
@@ -221,7 +228,8 @@ public class MerchantResourceIntTest {
                 .category(UPDATED_CATEGORY)
                 .backgroundColor(UPDATED_BACKGROUND_COLOR)
                 .email(UPDATED_EMAIL)
-                .phonenumber(UPDATED_PHONENUMBER);
+                .phonenumber(UPDATED_PHONENUMBER)
+                .userid(UPDATED_USERID);
         MerchantDTO merchantDTO = merchantMapper.merchantToMerchantDTO(updatedMerchant);
 
         restMerchantMockMvc.perform(put("/api/merchants")
@@ -243,6 +251,8 @@ public class MerchantResourceIntTest {
         assertThat(testMerchant.getBackgroundColor()).isEqualTo(UPDATED_BACKGROUND_COLOR);
         assertThat(testMerchant.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testMerchant.getPhonenumber()).isEqualTo(UPDATED_PHONENUMBER);
+        assertThat(testMerchant.getUserid()).isEqualTo(UPDATED_USERID);
+
     }
 
     @Test

@@ -41,6 +41,10 @@
         {
             "fieldName": "phonenumber",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "userid",
+            "fieldType": "String"
         }
     ],
     "dto": "mapstruct",

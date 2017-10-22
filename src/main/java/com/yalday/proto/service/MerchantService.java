@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.yalday.proto.service.UserService;
+
+
 /**
  * Service Implementation for managing Merchant.
  */
@@ -20,12 +23,16 @@ import java.util.stream.Collectors;
 public class MerchantService {
 
     private final Logger log = LoggerFactory.getLogger(MerchantService.class);
-    
+
     @Inject
     private MerchantRepository merchantRepository;
 
     @Inject
     private MerchantMapper merchantMapper;
+
+    @Inject
+    private UserService userService;
+
 
     /**
      * Save a merchant.
@@ -35,15 +42,24 @@ public class MerchantService {
      */
     public MerchantDTO save(MerchantDTO merchantDTO) {
         log.debug("Request to save Merchant : {}", merchantDTO);
+
+
+
+
         Merchant merchant = merchantMapper.merchantDTOToMerchant(merchantDTO);
         merchant = merchantRepository.save(merchant);
+        userService.updateUser(merchant);
+
+
+
         MerchantDTO result = merchantMapper.merchantToMerchantDTO(merchant);
+
         return result;
     }
 
     /**
      *  Get all the merchants.
-     *  
+     *
      *  @return the list of entities
      */
     public List<MerchantDTO> findAll() {
@@ -76,5 +92,6 @@ public class MerchantService {
     public void delete(String id) {
         log.debug("Request to delete Merchant : {}", id);
         merchantRepository.delete(id);
+        userService.deleteUserMerchant();
     }
 }

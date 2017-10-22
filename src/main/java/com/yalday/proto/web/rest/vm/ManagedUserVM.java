@@ -28,7 +28,7 @@ public class ManagedUserVM extends UserDTO {
     }
 
     public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
-                         String email, boolean activated, String imageUrl, String langKey, Type userType, List<Merchant> merchant,
+                         String email, boolean activated, String imageUrl, String langKey, Type userType, Merchant merchant,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
                          Set<String> authorities) {
 
