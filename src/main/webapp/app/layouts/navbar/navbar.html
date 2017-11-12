@@ -13,11 +13,11 @@
         </div>
         <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
-                <li ui-sref-active="active">
+                <li ui-sref-active="active" ng-switch-when>
                     <a ui-sref="merchantHome" ng-click="vm.collapseNavbar()">
-                        <span class="hidden-sm" data-translate="global.menu.signup">Merchant Test</span>
+                        <span class="hidden-sm" data-translate="global.menu.signup">Merchant Home</span>
                     </a>
-                </li>
+                </li-->
                 <li ui-sref-active="active" ng-switch-when="false">
                     <a href="" ng-click="vm.login()" id="login">
                         <span class="" data-translate="global.menu.account.login">Login</span>

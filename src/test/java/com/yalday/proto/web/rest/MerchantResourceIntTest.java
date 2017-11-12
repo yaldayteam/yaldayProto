@@ -1,13 +1,17 @@
 package com.yalday.proto.web.rest;
 
+import com.google.common.collect.Lists;
 import com.yalday.proto.YaldayProtoApp;
 
+import com.yalday.proto.domain.Appointment;
 import com.yalday.proto.domain.Merchant;
+import com.yalday.proto.domain.Resource;
 import com.yalday.proto.repository.MerchantRepository;
 import com.yalday.proto.service.MerchantService;
 import com.yalday.proto.service.dto.MerchantDTO;
 import com.yalday.proto.service.mapper.MerchantMapper;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -118,8 +122,22 @@ public class MerchantResourceIntTest {
                 .backgroundColor(DEFAULT_BACKGROUND_COLOR)
                 .email(DEFAULT_EMAIL)
                 .phonenumber(DEFAULT_PHONENUMBER)
-                .userid(DEFAULT_USERID);
+                .userid(DEFAULT_USERID)
+                .resources(Lists.newArrayList(createResource()));
         return merchant;
+    }
+
+    public static Resource createResource(){
+        return new Resource(createAppointment());
+    }
+
+    public static Appointment createAppointment(){
+        DateTime appointment1StartTime = new DateTime(2017, 1, 1, 12, 15);
+        DateTime appointment1EndTime = new DateTime(2017, 1, 1, 12, 30);
+        return new Appointment("test"
+            , appointment1StartTime.toDate()
+            , appointment1EndTime.toDate()
+        );
     }
 
     @Before
@@ -200,7 +218,8 @@ public class MerchantResourceIntTest {
             .andExpect(jsonPath("$.backgroundColor").value(DEFAULT_BACKGROUND_COLOR.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()))
-            .andExpect(jsonPath("$.userid").value(hasItem(DEFAULT_USERID.toString())));
+            .andExpect(jsonPath("$.userid").value(DEFAULT_USERID.toString()))
+            .andExpect(jsonPath("$.resources").isNotEmpty());
     }
 
     @Test

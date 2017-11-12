@@ -33,7 +33,6 @@ public class MerchantService {
     @Inject
     private UserService userService;
 
-
     /**
      * Save a merchant.
      *
@@ -42,19 +41,11 @@ public class MerchantService {
      */
     public MerchantDTO save(MerchantDTO merchantDTO) {
         log.debug("Request to save Merchant : {}", merchantDTO);
-
-
-
-
         Merchant merchant = merchantMapper.merchantDTOToMerchant(merchantDTO);
         merchant = merchantRepository.save(merchant);
         userService.updateUser(merchant);
 
-
-
-        MerchantDTO result = merchantMapper.merchantToMerchantDTO(merchant);
-
-        return result;
+        return merchantMapper.merchantToMerchantDTO(merchant);
     }
 
     /**
@@ -64,11 +55,10 @@ public class MerchantService {
      */
     public List<MerchantDTO> findAll() {
         log.debug("Request to get all Merchants");
-        List<MerchantDTO> result = merchantRepository.findAll().stream()
+
+        return merchantRepository.findAll().stream()
             .map(merchantMapper::merchantToMerchantDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-
-        return result;
     }
 
     /**
@@ -80,8 +70,7 @@ public class MerchantService {
     public MerchantDTO findOne(String id) {
         log.debug("Request to get Merchant : {}", id);
         Merchant merchant = merchantRepository.findOne(id);
-        MerchantDTO merchantDTO = merchantMapper.merchantToMerchantDTO(merchant);
-        return merchantDTO;
+        return merchantMapper.merchantToMerchantDTO(merchant);
     }
 
     /**

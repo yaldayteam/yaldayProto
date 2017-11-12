@@ -1,6 +1,9 @@
 package com.yalday.proto.service.dto;
 
+import com.yalday.proto.domain.Resource;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -32,6 +35,8 @@ public class MerchantDTO implements Serializable {
     private String phonenumber;
 
     private String userid;
+
+    private List<Resource> resources;
 
     public String getId() {
         return id;
@@ -121,7 +126,32 @@ public class MerchantDTO implements Serializable {
         this.userid = userid;
     }
 
+    @Override
+    public String toString() {
+        return "MerchantDTO{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", address='" + address + '\'' +
+            ", city='" + city + '\'' +
+            ", postcode='" + postcode + '\'' +
+            ", country='" + country + '\'' +
+            ", category='" + category + '\'' +
+            ", backgroundColor='" + backgroundColor + '\'' +
+            ", email='" + email + '\'' +
+            ", phonenumber='" + phonenumber + '\'' +
+            ", userid='" + userid + '\'' +
+            ", resources=" + resources +
+            '}';
+    }
 
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -144,21 +174,4 @@ public class MerchantDTO implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "MerchantDTO{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", address='" + address + '\'' +
-            ", city='" + city + '\'' +
-            ", postcode='" + postcode + '\'' +
-            ", country='" + country + '\'' +
-            ", category='" + category + '\'' +
-            ", backgroundColor='" + backgroundColor + '\'' +
-            ", email='" + email + '\'' +
-            ", phonenumber='" + phonenumber + '\'' +
-            ", userid='" + userid + '\'' +
-            '}';
-    }
 }

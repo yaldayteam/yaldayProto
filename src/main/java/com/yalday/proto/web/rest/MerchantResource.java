@@ -1,6 +1,7 @@
 package com.yalday.proto.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.yalday.proto.domain.Appointment;
 import com.yalday.proto.service.MerchantService;
 import com.yalday.proto.web.rest.util.HeaderUtil;
 import com.yalday.proto.service.dto.MerchantDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ import java.util.stream.Collectors;
 public class MerchantResource {
 
     private final Logger log = LoggerFactory.getLogger(MerchantResource.class);
-        
+
     @Inject
     private MerchantService merchantService;
 
@@ -101,6 +103,13 @@ public class MerchantResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/merchants/{id}/appointments")
+    @Timed
+    public List<Appointment> getMerchantAppointments(@PathVariable String id){
+        log.debug("REST request to get Merchant appointments : {}", id);
+        return Collections.emptyList();
     }
 
     /**

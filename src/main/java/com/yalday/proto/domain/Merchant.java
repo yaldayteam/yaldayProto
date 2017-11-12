@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +53,8 @@ public class Merchant implements Serializable {
     @Field("userid")
     private String userid;
 
-
+    @Field("resources")
+    private List<Resource> resources;
 
     public String getUserid() {
         return userid;
@@ -83,6 +85,19 @@ public class Merchant implements Serializable {
     public Merchant name(String name) {
         this.name = name;
         return this;
+    }
+
+    public Merchant resources(final List<Resource> resources){
+        this.resources = resources;
+        return this;
+    }
+
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
     }
 
     public void setName(String name) {

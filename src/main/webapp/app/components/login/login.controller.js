@@ -5,9 +5,10 @@
         .module('yaldayProtoApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', '$timeout', 'Auth', '$uibModalInstance'];
+    LoginController.$inject = ['$rootScope', '$state', '$timeout', 'Auth', '$uibModalInstance', 'Principal'];
 
-    function LoginController ($rootScope, $state, $timeout, Auth, $uibModalInstance) {
+    function LoginController ($rootScope, $state, $timeout, Auth, $uibModalInstance, Principal) {
+
         var vm = this;
 
         vm.authenticationError = false;
@@ -45,6 +46,27 @@
                     $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                     $state.go('home');
                 }
+
+
+                //added in by MRAE on 12.11.17
+
+                Principal.identity().then(function(account)
+                {
+                                           console.log(account.userType);
+
+
+                                           if(account.userType == "merchant")
+                                           {
+                                                $state.go('merchantHome');
+                                           }
+
+
+
+                });
+
+
+
+                //finished by MRAE on 12.11.17
 
                 $rootScope.$broadcast('authenticationSuccess');
 

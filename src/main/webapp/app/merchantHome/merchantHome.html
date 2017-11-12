@@ -1,23 +1,18 @@
 <br>
 
-<div class="col-md-8">
+<div class="col-md-10">
 
     <div ng-switch="vm.isAuthenticated()">
         <div class="alert alert-success" ng-switch-when="true">
             You are logged in under the account "{{vm.account.login}}".
         </div>
         <div class="alert alert-success" ng-switch-when="true">
-            Welcome back "{{vm.account.firstName}}", this is your Business dashboard.
+            Welcome back "{{vm.account.login}}", this is your Business dashboard.
         </div>
-
-
     </div>
 
     <div ng-switch="vm.account.merchant.id != null">
-
         <div  ng-switch-when="true" >
-
-
             <div>
                 <hr>
                 <jhi-alert-error></jhi-alert-error>
@@ -82,12 +77,22 @@
         </div>
 
 
-        <div ng-switch-when="false" style="color:red">
-            <b> You have no merchant details </b>
 
+
+        <div ng-switch-when="false" style="color:red">
+
+
+
+
+            <div class="col-md-8">
             <div class="container-fluid col-md-8">
+
+                <b> You have no merchant details. Please add your details below</b>
+                <br>
                 <div class="row">
-                    <div class="col-xs-4 no-padding-left">
+
+
+                    <div class="col-xs-4 no-padding-right">
                         <button class="btn btn-primary" ui-sref="merchantHome.new" >
                             <span class="glyphicon glyphicon-plus"></span>
                             <span >
@@ -96,10 +101,18 @@
                         </button>
                     </div>
                 </div>
+
             </div>
 
+            <br>
 
+            </div>
         </div>
+
+
+        <br>
+        <br>
+        <br>
 
 
 
@@ -108,26 +121,24 @@
 
 <br>
 
-<div class="col-md-3 col-md-offset-2">
-    <ul class="" id="manageList" >
-        <li ui-sref-active="#">
-            <a ui-sref="merchantHome.booking">Bookings</a>
-        </li>
-        <li ui-sref-active="#">
-            <a ui-sref="merchantHome.service">Services</a>
-        </li>
-        <li ui-sref-active="#">
-        <a ui-sref="merchantHome.resource">Resources</a>
-        </li>
-    </ul>
-</div>
 
 
 
 
 
-<div class="col-md-6">
-    <div class="container-fluid" ng-cloak>
-        <div class="" ui-view="manageType"></div>
+
+
+    <div ng-switch="vm.account.merchant.id != null">
+
+
+
+        <div  ng-switch-when="true" >
+
+            <b>Your Booking Calendar</b>
+
+
+            <div dx-scheduler>
+            </div>
+         </div>
     </div>
 </div>
