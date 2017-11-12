@@ -1,5 +1,6 @@
 package com.yalday.proto.service;
 
+import com.yalday.proto.domain.Appointment;
 import com.yalday.proto.domain.Merchant;
 import com.yalday.proto.repository.MerchantRepository;
 import com.yalday.proto.service.dto.MerchantDTO;
@@ -71,6 +72,12 @@ public class MerchantService {
         log.debug("Request to get Merchant : {}", id);
         Merchant merchant = merchantRepository.findOne(id);
         return merchantMapper.merchantToMerchantDTO(merchant);
+    }
+
+    public Appointment findAppointments(String id){
+        log.debug("Request to get Merchant appointments : {}", id);
+        Merchant merchant = merchantRepository.findOne(id);
+        return merchant.getResources().get(0).getAppointment();
     }
 
     /**

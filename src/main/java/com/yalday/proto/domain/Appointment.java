@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by martin on 12/11/2017.
  */
-@Document(collection = "appointment")
+@Document(collection = "merchant")
 public class Appointment {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +32,8 @@ public class Appointment {
 
     @Field
     private Date endTime;
+
+    public Appointment(){}
 
     public Appointment(final String text,
                        final Date startTime,

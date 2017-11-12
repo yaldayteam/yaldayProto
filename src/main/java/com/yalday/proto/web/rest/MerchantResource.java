@@ -107,9 +107,9 @@ public class MerchantResource {
 
     @GetMapping("/merchants/{id}/appointments")
     @Timed
-    public List<Appointment> getMerchantAppointments(@PathVariable String id){
+    public Appointment getMerchantAppointments(@PathVariable String id){
         log.debug("REST request to get Merchant appointments : {}", id);
-        return Collections.emptyList();
+        return merchantService.findAppointments(id);
     }
 
     /**

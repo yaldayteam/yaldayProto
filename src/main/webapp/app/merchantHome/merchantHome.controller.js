@@ -12,6 +12,12 @@
 
              vm.account = null;
 
+
+
+
+
+
+
              $stateParams.id = null;
              getAccount();
 
@@ -19,7 +25,7 @@
                          Principal.identity().then(function(account) {
                              vm.account = account;
                              vm.isAuthenticated = Principal.isAuthenticated;
-
+                             console.log(vm.account);
                          });
                      }
 

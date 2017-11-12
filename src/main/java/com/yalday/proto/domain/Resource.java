@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Created by martin on 12/11/2017.
  */
 //TODO Can we think of a better name than resource for what this is?
-@Document(collection = "resource")
+@Document(collection = "merchant")
 public class Resource {
 
     private static final long serialVersionUID = 1L;
@@ -44,5 +44,9 @@ public class Resource {
      */
     public boolean isFullyBooked(){
         return true;
+    }
+
+    public Appointment getAppointment() {
+        return appointment;
     }
 }
