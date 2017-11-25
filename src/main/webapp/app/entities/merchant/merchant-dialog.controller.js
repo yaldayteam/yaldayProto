@@ -26,6 +26,10 @@
         function save () {
             vm.isSaving = true;
             if (vm.merchant.id !== null) {
+
+                //console.log("Im in dialog controller");
+                //console.log(vm.merchant);
+                //vm.merchant.resources = {id:1};
                 Merchant.update(vm.merchant, onSaveSuccess, onSaveError);
 
             } else {
