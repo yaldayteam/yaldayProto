@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -41,6 +43,7 @@ public class BookingResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new booking, or with status 400 (Bad Request) if the booking has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
+
     @PostMapping("/bookings")
     @Timed
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws URISyntaxException {
@@ -53,6 +56,19 @@ public class BookingResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+    /*@RequestMapping( value = "/bookings", method = RequestMethod.POST)
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws URISyntaxException
+    {
+        log.debug("REST request to save Booking : {}", booking);
+        if(booking.getId() != null){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new booking cannot already have an ID")).body(null);
+        }
+        Booking result = bookingRepository.save(booking);
+        return ResponseEntity.created(new URI("/api/bookings/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }*/
 
     /**
      * PUT  /bookings : Updates an existing booking.
