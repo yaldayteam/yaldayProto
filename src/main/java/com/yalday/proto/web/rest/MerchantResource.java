@@ -21,6 +21,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+import com.yalday.proto.repository.BookingRepository;
+import com.yalday.proto.domain.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
 /**
  * REST controller for managing Merchant.
  */
@@ -32,6 +39,8 @@ public class MerchantResource {
 
     @Inject
     private MerchantService merchantService;
+
+
 
     /**
      * POST  /merchants : Create a new merchant.
@@ -47,11 +56,15 @@ public class MerchantResource {
         if (merchantDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("merchant", "idexists", "A new merchant cannot already have an ID")).body(null);
         }
+
         MerchantDTO result = merchantService.save(merchantDTO);
+
         return ResponseEntity.created(new URI("/api/merchants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("merchant", result.getId().toString()))
             .body(result);
     }
+
+
 
     /**
      * PUT  /merchants : Updates an existing merchant.
@@ -105,12 +118,12 @@ public class MerchantResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/merchants/{id}/appointments")
+  /*  @GetMapping("/merchants/{id}/appointments")
     @Timed
     public Appointment getMerchantAppointments(@PathVariable String id){
         log.debug("REST request to get Merchant appointments : {}", id);
         return merchantService.findAppointments(id);
-    }
+    }*/
 
     /**
      * DELETE  /merchants/:id : delete the "id" merchant.

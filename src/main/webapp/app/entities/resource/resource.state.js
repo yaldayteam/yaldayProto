@@ -9,44 +9,44 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('booking', {
+        .state('resource', {
             parent: 'entity',
-            url: '/booking',
+            url: '/resource',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Bookings'
+                pageTitle: 'Resources'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/booking/bookings.html',
-                    controller: 'BookingController',
+                    templateUrl: 'app/entities/resource/resources.html',
+                    controller: 'ResourceController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
             }
         })
-        .state('booking-detail', {
-            parent: 'booking',
-            url: '/booking/{id}',
+        .state('resource-detail', {
+            parent: 'resource',
+            url: '/resource/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Booking'
+                pageTitle: 'Resource'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/booking/booking-detail.html',
-                    controller: 'BookingDetailController',
+                    templateUrl: 'app/entities/resource/resource-detail.html',
+                    controller: 'ResourceDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
-                entity: ['$stateParams', 'Booking', function($stateParams, Booking) {
-                    return Booking.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Resource', function($stateParams, Resource) {
+                    return Resource.get({id : $stateParams.id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
-                        name: $state.current.name || 'booking',
+                        name: $state.current.name || 'resource',
                         params: $state.params,
                         url: $state.href($state.current.name, $state.params)
                     };
@@ -54,24 +54,22 @@
                 }]
             }
         })
-        .state('booking-detail.edit', {
-            parent: 'booking-detail',
+        .state('resource-detail.edit', {
+            parent: 'resource-detail',
             url: '/detail/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/booking/booking-dialog.html',
-                    controller: 'BookingDialogController',
+                    templateUrl: 'app/entities/resource/resource-dialog.html',
+                    controller: 'ResourceDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Booking', function(Booking) {
-                            console.log("ININININ");
-                            console.log($stateParams.id);
-                            return Booking.get({id : $stateParams.id}).$promise;
+                        entity: ['Resource', function(Resource) {
+                            return Resource.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
@@ -81,16 +79,16 @@
                 });
             }]
         })
-        .state('booking.new', {
-            parent: 'booking',
+        .state('resource.new', {
+            parent: 'resource',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/booking/booking-dialog.html',
-                    controller: 'BookingDialogController',
+                    templateUrl: 'app/entities/resource/resource-dialog.html',
+                    controller: 'ResourceDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
@@ -98,64 +96,64 @@
                         entity: function () {
                             return {
                                 text: null,
-                                startDate: null,
-                                endDate: null,
+                                color: null,
+                                capacity: null,
+                                multiplebooking: null,
                                 id: null
                             };
                         }
                     }
                 }).result.then(function() {
-                    $state.go('booking', null, { reload: 'booking' });
+                    $state.go('resource', null, { reload: 'resource' });
                 }, function() {
-                    $state.go('booking');
+                    $state.go('resource');
                 });
             }]
         })
-        .state('booking.edit', {
-            parent: 'booking',
+        .state('resource.edit', {
+            parent: 'resource',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/booking/booking-dialog.html',
-                    controller: 'BookingDialogController',
+                    templateUrl: 'app/entities/resource/resource-dialog.html',
+                    controller: 'ResourceDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Booking', function(Booking) {
-                            console.log($stateParams.id);
-                            return Booking.get({id : $stateParams.id}).$promise;
+                        entity: ['Resource', function(Resource) {
+                            return Resource.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('booking', null, { reload: 'booking' });
+                    $state.go('resource', null, { reload: 'resource' });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('booking.delete', {
-            parent: 'booking',
+        .state('resource.delete', {
+            parent: 'resource',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/booking/booking-delete-dialog.html',
-                    controller: 'BookingDeleteController',
+                    templateUrl: 'app/entities/resource/resource-delete-dialog.html',
+                    controller: 'ResourceDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Booking', function(Booking) {
-                            return Booking.get({id : $stateParams.id}).$promise;
+                        entity: ['Resource', function(Resource) {
+                            return Resource.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('booking', null, { reload: 'booking' });
+                    $state.go('resource', null, { reload: 'resource' });
                 }, function() {
                     $state.go('^');
                 });

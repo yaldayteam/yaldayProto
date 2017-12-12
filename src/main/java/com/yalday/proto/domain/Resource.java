@@ -3,50 +3,123 @@ package com.yalday.proto.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.List;
+import com.yalday.proto.domain.Booking;
 
 /**
- * Created by martin on 12/11/2017.
+ * A Resource.
  */
-//TODO Can we think of a better name than resource for what this is?
-@Document(collection = "merchant")
-public class Resource {
+@Document(collection = "resource")
+public class Resource implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     private String id;
 
-    @Field
-    private String resourceId;
+    @Field("text")
+    private String text;
 
-    @Field
-    private Appointment appointment;
+    @Field("color")
+    private String color;
 
-    public Resource (){}
+    @Field("capacity")
+    private int capacity;
 
-    public Resource(Appointment appointment) {
-        this.appointment = appointment;
+    @Field("multiplebooking")
+    private Boolean multiplebooking;
+
+
+    public String getId() {
+        return id;
     }
 
-    public Resource resourceId(String resourceId){
-        this.resourceId = resourceId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Resource text(String text) {
+        this.text = text;
         return this;
     }
 
-    public Resource appointments(final Appointment appointments){
-        this.appointment = appointments;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public Resource color(String color) {
+        this.color = color;
         return this;
     }
 
-    /**
-     * A resource can have multiple appointment
-     * @return a boolean value representing whether a resource is fully allocated
-     */
-    public boolean isFullyBooked(){
-        return true;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public Appointment getAppointment() {
-        return appointment;
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public Resource capacity(int capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public Boolean isMultiplebooking() {
+        return multiplebooking;
+    }
+
+    public Resource multiplebooking(Boolean multiplebooking) {
+        this.multiplebooking = multiplebooking;
+        return this;
+    }
+
+    public void setMultiplebooking(Boolean multiplebooking) {
+        this.multiplebooking = multiplebooking;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Resource resource = (Resource) o;
+        if (resource.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), resource.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+            "id=" + getId() +
+            ", text='" + getText() + "'" +
+            ", color='" + getColor() + "'" +
+            ", capacity='" + getCapacity() + "'" +
+            ", multiplebooking='" + isMultiplebooking() + "'" +
+            "}";
     }
 }

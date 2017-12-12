@@ -17,6 +17,9 @@ public class Booking implements Serializable {
     @Id
     private String id;
 
+    @Field("priorityId")
+    private String priorityId;
+
     @Field("text")
     private String text;
 
@@ -32,6 +35,14 @@ public class Booking implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getpriorityId() {
+        return priorityId;
+    }
+
+    public void setpriorityId(String priorityId) {
+        this.priorityId = priorityId;
     }
 
     public String getText() {
@@ -102,6 +113,7 @@ public class Booking implements Serializable {
         return "Booking{" +
             "id=" + getId() +
             ", text='" + getText() + "'" +
+            ", priorityId='" + getpriorityId() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             "}";

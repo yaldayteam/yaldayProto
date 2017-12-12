@@ -1,11 +1,20 @@
 package com.yalday.proto.web.rest;
 
 import com.yalday.proto.YaldayProtoApp;
+import com.yalday.proto.repository.MerchantRepository;
+import com.yalday.proto.service.mapper.MerchantMapper;
+import com.yalday.proto.domain.Merchant;
 
+import com.yalday.proto.domain.Resource;
 import com.yalday.proto.domain.Booking;
+import com.yalday.proto.repository.ResourceRepository;
 import com.yalday.proto.repository.BookingRepository;
 import com.yalday.proto.web.rest.errors.ExceptionTranslator;
-import java.util.Arrays;
+import javax.inject.Inject;
+import com.yalday.proto.service.dto.MerchantDTO;
+import com.yalday.proto.service.MerchantService;
+import org.springframework.test.util.ReflectionTestUtils;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,61 +28,34 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
 import java.util.List;
+import java.util.ArrayList;
 
-import static com.yalday.proto.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.yalday.proto.service.mapper.MerchantMapper;
-import com.yalday.proto.domain.Merchant;
-import com.yalday.proto.repository.MerchantRepository;
-import javax.inject.Inject;
-import com.yalday.proto.service.dto.MerchantDTO;
-import com.yalday.proto.service.MerchantService;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Random;
-import java.util.regex.Pattern;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
- * Test class for the BookingResource REST controller.
+ * Test class for the ResourceResource REST controller.
  *
- * @see BookingResource
+ * @see ResourceResource
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = YaldayProtoApp.class)
-public class BookingResourceIntTest {
+public class ResourceResourceIntTest {
 
-    private static final String DEFAULT_TEXT = "Booking the *&*&*";
+    private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_START_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_START_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final String DEFAULT_COLOR = "AAAAAAAAAA";
+    private static final String UPDATED_COLOR = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_END_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_END_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Integer DEFAULT_CAPACITY = 1;
+    private static final Integer UPDATED_CAPACITY = 2;
 
+    private static final Boolean DEFAULT_MULTIPLEBOOKING = false;
+    private static final Boolean UPDATED_MULTIPLEBOOKING = true;
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -108,11 +90,18 @@ public class BookingResourceIntTest {
     private static final String DEFAULT_USERID = "AAAAAAA";
     private static final String UPDATED_USERID = "BBBBBBB";
 
+
+
+
+
     @Autowired
-    private BookingRepository bookingRepository;
+    private ResourceRepository resourceRepository;
 
     @Autowired
     private MerchantRepository merchantRepository;
+
+    @Autowired
+    private MerchantService merchantService;
 
     @Inject
     private MerchantMapper merchantMapper;
@@ -127,24 +116,22 @@ public class BookingResourceIntTest {
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
-    @Autowired
-    private MerchantService merchantService;
-
-    private MockMvc restBookingMockMvc;
+    private MockMvc restResourceMockMvc;
 
     private MockMvc restMerchantMockMvc;
 
-    private Booking booking;
+    private Resource resource;
 
     private Merchant merchant;
+
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        BookingResource bookingResource = new BookingResource(bookingRepository, merchantService);
+        ResourceResource resourceResource = new ResourceResource(resourceRepository, merchantService);
         MerchantResource merchantResource = new MerchantResource();
         ReflectionTestUtils.setField(merchantResource, "merchantService", merchantService);
-        this.restBookingMockMvc = MockMvcBuilders.standaloneSetup(bookingResource)
+        this.restResourceMockMvc = MockMvcBuilders.standaloneSetup(resourceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -159,15 +146,14 @@ public class BookingResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Booking createEntity() {
-        Booking booking = new Booking()
+    public static Resource createEntity() {
+        Resource resource = new Resource()
             .text(DEFAULT_TEXT)
-            .startDate(DEFAULT_START_TIME)
-            .endDate(DEFAULT_END_TIME);
-        return booking;
+            .color(DEFAULT_COLOR)
+            .capacity(DEFAULT_CAPACITY)
+            .multiplebooking(DEFAULT_MULTIPLEBOOKING);
+        return resource;
     }
-
-
 
     public static Merchant createMerchantEntity() {
         Merchant merchant = new Merchant()
@@ -186,40 +172,38 @@ public class BookingResourceIntTest {
         return merchant;
     }
 
-
-
-
     @Before
     public void initTest() {
-        bookingRepository.deleteAll();
+        resourceRepository.deleteAll();
         merchantRepository.deleteAll();
-        booking = createEntity();
+        resource = createEntity();
         merchant = createMerchantEntity();
     }
 
     @Test
-    public void createBooking() throws Exception {
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
+    public void createResource() throws Exception {
+        int databaseSizeBeforeCreate = resourceRepository.findAll().size();
 
-
-        restBookingMockMvc.perform(post("/api/bookings")
+        // Create the Resource
+        restResourceMockMvc.perform(post("/api/resources")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated());
 
-
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeCreate + 1);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getText()).isEqualTo(DEFAULT_TEXT);
-        assertThat(testBooking.getStartDate()).isEqualTo(DEFAULT_START_TIME);
-        assertThat(testBooking.getEndDate()).isEqualTo(DEFAULT_END_TIME);
+        // Validate the Resource in the database
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(databaseSizeBeforeCreate + 1);
+        Resource testResource = resourceList.get(resourceList.size() - 1);
+        assertThat(testResource.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testResource.getColor()).isEqualTo(DEFAULT_COLOR);
+        assertThat(testResource.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
+        assertThat(testResource.isMultiplebooking()).isEqualTo(DEFAULT_MULTIPLEBOOKING);
     }
 
     @Test
-    public void createBookingForMerchant() throws Exception {
+    public void createResourceForMerchant() throws Exception {
         initTest();
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
+        int databaseSizeBeforeCreate = resourceRepository.findAll().size();
 
         MerchantDTO merchantDTO = merchantMapper.merchantToMerchantDTO(merchant);
 
@@ -233,9 +217,9 @@ public class BookingResourceIntTest {
         assertThat(merchants).hasSize(databaseSizeBeforeCreate + 1);
         Merchant testMerchant = merchants.get(merchants.size() - 1);
 
-        restBookingMockMvc.perform(post ("/api/merchants/booking/{id}", testMerchant.getId())
+        restResourceMockMvc.perform(post ("/api/merchants/resource/{id}", testMerchant.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated())
             .andDo(print());
 
@@ -254,13 +238,13 @@ public class BookingResourceIntTest {
         assertThat(updatedMerchant.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(updatedMerchant.getPhonenumber()).isEqualTo(DEFAULT_PHONENUMBER);
         assertThat(updatedMerchant.getUserid()).isEqualTo(DEFAULT_USERID);
-        assertThat(updatedMerchant.getBookings()).isNotNull();
+        assertThat(updatedMerchant.getResources()).isNotNull();
     }
 
 
     @Test
-    public void getBookingsForMerchant() throws Exception {
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
+    public void getResourcesForMerchant() throws Exception {
+        int databaseSizeBeforeCreate = resourceRepository.findAll().size();
 
         MerchantDTO merchantDTO = merchantMapper.merchantToMerchantDTO(merchant);
 
@@ -274,9 +258,9 @@ public class BookingResourceIntTest {
         assertThat(merchants).hasSize(databaseSizeBeforeCreate + 1);
         Merchant testMerchant = merchants.get(merchants.size() - 1);
 
-        restBookingMockMvc.perform(post ("/api/merchants/booking/{id}", testMerchant.getId())
+        restResourceMockMvc.perform(post ("/api/merchants/resource/{id}", testMerchant.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated());
 
         MerchantDTO updatedMerchant = merchantService.findOne(testMerchant.getId());
@@ -292,21 +276,19 @@ public class BookingResourceIntTest {
         assertThat(updatedMerchant.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(updatedMerchant.getPhonenumber()).isEqualTo(DEFAULT_PHONENUMBER);
         assertThat(updatedMerchant.getUserid()).isEqualTo(DEFAULT_USERID);
-        assertThat(updatedMerchant.getBookings()).isNotNull();
+        assertThat(updatedMerchant.getResources()).isNotNull();
 
-        restBookingMockMvc.perform(get("/api/merchants/booking/{id}", testMerchant.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
-                .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_TIME))))
-                .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_TIME))))
-                .andDo(print());
+        restResourceMockMvc.perform(get("/api/merchants/resource/{id}", testMerchant.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
+            .andDo(print());
 
     }
 
     @Test
-    public void updateBookingsForMerchant() throws Exception {
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
+    public void updateResourcesForMerchant() throws Exception {
+        int databaseSizeBeforeCreate = resourceRepository.findAll().size();
 
         MerchantDTO merchantDTO = merchantMapper.merchantToMerchantDTO(merchant);
 
@@ -320,37 +302,33 @@ public class BookingResourceIntTest {
         Merchant testMerchant = merchants.get(merchants.size() - 1);
 
 
-        restBookingMockMvc.perform(post ("/api/merchants/booking/{id}", testMerchant.getId())
+        restResourceMockMvc.perform(post ("/api/merchants/resource/{id}", testMerchant.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated())
             .andDo(print());
 
-        List<Booking> bookings = bookingRepository.findAll();
-        assertThat(bookings).hasSize(databaseSizeBeforeCreate + 1);
-        Booking amendedBooking = bookings.get(bookings.size() - 1);
+        List<Resource> resources = resourceRepository.findAll();
+        assertThat(resources).hasSize(databaseSizeBeforeCreate + 1);
+        Resource amendedResource = resources.get(resources.size() - 1);
 
-        amendedBooking
-            .text(UPDATED_TEXT)
-            .startDate(UPDATED_START_TIME)
-            .endDate(UPDATED_END_TIME);
+        amendedResource
+            .text(UPDATED_TEXT);
 
         MerchantDTO updatedMerchant = merchantService.findOne(testMerchant.getId());
 
-        restBookingMockMvc.perform(put("/api/merchants/booking/{id}", updatedMerchant.getId())
+        restResourceMockMvc.perform(put("/api/merchants/resource/{id}", updatedMerchant.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(amendedBooking)))
+            .content(TestUtil.convertObjectToJsonBytes(amendedResource)))
             .andExpect(status().isOk());
 
-        List<Booking> bookingList = bookingRepository.findAll();
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getText()).isEqualTo(UPDATED_TEXT);
-        assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_TIME);
-        assertThat(testBooking.getEndDate()).isEqualTo(UPDATED_END_TIME);
-  }
+        List<Resource> resourceList = resourceRepository.findAll();
+        Resource testResource = resourceList.get(resourceList.size() - 1);
+        assertThat(testResource.getText()).isEqualTo(UPDATED_TEXT);
+    }
 
     @Test
-    public void deleteBookingForMerchant() throws Exception {
+    public void deleteResourceForMerchant() throws Exception {
 
 
         int databaseSizeBeforeCreate = 0;
@@ -368,158 +346,170 @@ public class BookingResourceIntTest {
 
         String merchantId = testMerchant.getId();
 
-        restBookingMockMvc.perform(post ("/api/merchants/booking/{id}", testMerchant.getId())
+        restResourceMockMvc.perform(post ("/api/merchants/resource/{id}", testMerchant.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated())
             .andDo(print());
 
-        List<Booking> bookings = bookingRepository.findAll();
-        assertThat(bookings).hasSize(databaseSizeBeforeCreate + 1);
-        Booking bookingToBeDeleted = bookings.get(bookings.size() - 1);
-        String bookingId = bookingToBeDeleted.getId();
-        int i = bookings.size();
+        List<Resource> resources = resourceRepository.findAll();
+        assertThat(resources).hasSize(databaseSizeBeforeCreate + 1);
+        Resource resourceToBeDeleted = resources.get(resources.size() - 1);
+        String resourceId = resourceToBeDeleted.getId();
+        int i = resources.size();
 
 
-        // Delete the booking
-        restBookingMockMvc.perform(delete("/api/merchants/booking/{id}", bookingToBeDeleted.getId())
+        // Delete the Resource
+        restResourceMockMvc.perform(delete("/api/merchants/resource/{id}", resourceToBeDeleted.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(i - 1);
-
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(i - 1);
 
     }
 
 
 
-    @Test
-    public void createBookingWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
 
-        // Create the Booking with an existing ID
-        booking.setId("existing_id");
+
+
+    @Test
+    public void createResourceWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = resourceRepository.findAll().size();
+
+        // Create the Resource with an existing ID
+        resource.setId("existing_id");
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restBookingMockMvc.perform(post("/api/bookings")
+        restResourceMockMvc.perform(post("/api/resources")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeCreate);
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
-    public void getAllBookings() throws Exception {
+    public void getAllResources() throws Exception {
         // Initialize the database
-        bookingRepository.save(booking);
+        resourceRepository.save(resource);
 
-        // Get all the bookingList
-        restBookingMockMvc.perform(get("/api/bookings?sort=id,desc"))
+        // Get all the resourceList
+        restResourceMockMvc.perform(get("/api/resources?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(resource.getId())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_TIME))))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_TIME))));
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR.toString())))
+            .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
+            .andExpect(jsonPath("$.[*].multiplebooking").value(hasItem(DEFAULT_MULTIPLEBOOKING.booleanValue())));
     }
 
     @Test
-    public void getBooking() throws Exception {
+    public void getResource() throws Exception {
         // Initialize the database
-        bookingRepository.save(booking);
+        resourceRepository.save(resource);
 
-        // Get the booking
-        restBookingMockMvc.perform(get("/api/bookings/{id}", booking.getId()))
+        // Get the resource
+        restResourceMockMvc.perform(get("/api/resources/{id}", resource.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(booking.getId()))
+            .andExpect(jsonPath("$.id").value(resource.getId()))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
-            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_TIME)))
-            .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_TIME)));
+            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR.toString()))
+            .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY))
+            .andExpect(jsonPath("$.multiplebooking").value(DEFAULT_MULTIPLEBOOKING.booleanValue()));
     }
 
     @Test
-    public void getNonExistingBooking() throws Exception {
-        // Get the booking
-        restBookingMockMvc.perform(get("/api/bookings/{id}", Long.MAX_VALUE))
+    public void getNonExistingResource() throws Exception {
+        // Get the resource
+        restResourceMockMvc.perform(get("/api/resources/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
     @Test
-    public void updateBooking() throws Exception {
+    public void updateResource() throws Exception {
         // Initialize the database
-        bookingRepository.save(booking);
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
+        resourceRepository.save(resource);
+        int databaseSizeBeforeUpdate = resourceRepository.findAll().size();
 
-        // Update the booking
-        Booking updatedBooking = bookingRepository.findOne(booking.getId());
-        updatedBooking
+        // Update the resource
+        Resource updatedResource = resourceRepository.findOne(resource.getId());
+        updatedResource
             .text(UPDATED_TEXT)
-            .startDate(UPDATED_START_TIME)
-            .endDate(UPDATED_END_TIME);
+            .color(UPDATED_COLOR)
+            .capacity(UPDATED_CAPACITY)
+            .multiplebooking(UPDATED_MULTIPLEBOOKING);
 
-        restBookingMockMvc.perform(put("/api/bookings")
+        restResourceMockMvc.perform(put("/api/resources")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedBooking)))
+            .content(TestUtil.convertObjectToJsonBytes(updatedResource)))
             .andExpect(status().isOk());
 
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getText()).isEqualTo(UPDATED_TEXT);
-        assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_TIME);
-        assertThat(testBooking.getEndDate()).isEqualTo(UPDATED_END_TIME);
+        // Validate the Resource in the database
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(databaseSizeBeforeUpdate);
+        Resource testResource = resourceList.get(resourceList.size() - 1);
+        assertThat(testResource.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testResource.getColor()).isEqualTo(UPDATED_COLOR);
+        assertThat(testResource.getCapacity()).isEqualTo(UPDATED_CAPACITY);
+        assertThat(testResource.isMultiplebooking()).isEqualTo(UPDATED_MULTIPLEBOOKING);
     }
 
     @Test
-    public void updateNonExistingBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
+    public void updateNonExistingResource() throws Exception {
+        int databaseSizeBeforeUpdate = resourceRepository.findAll().size();
 
-        // Create the Booking
+        // Create the Resource
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restBookingMockMvc.perform(put("/api/bookings")
+        restResourceMockMvc.perform(put("/api/resources")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(booking)))
+            .content(TestUtil.convertObjectToJsonBytes(resource)))
             .andExpect(status().isCreated());
 
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate + 1);
+        // Validate the Resource in the database
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test
-    public void deleteBooking() throws Exception {
+    public void deleteResource() throws Exception {
         // Initialize the database
-        bookingRepository.save(booking);
-        int databaseSizeBeforeDelete = bookingRepository.findAll().size();
+        resourceRepository.save(resource);
+        int databaseSizeBeforeDelete = resourceRepository.findAll().size();
 
-        // Get the booking
-        restBookingMockMvc.perform(delete("/api/bookings/{id}", booking.getId())
+        // Get the resource
+        restResourceMockMvc.perform(delete("/api/resources/{id}", resource.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeDelete - 1);
+        List<Resource> resourceList = resourceRepository.findAll();
+        assertThat(resourceList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
     @Test
     public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Booking.class);
-        Booking booking1 = new Booking();
-        booking1.setId("id1");
-        Booking booking2 = new Booking();
-        booking2.setId(booking1.getId());
-        assertThat(booking1).isEqualTo(booking2);
-        booking2.setId("id2");
-        assertThat(booking1).isNotEqualTo(booking2);
-        booking1.setId(null);
-        assertThat(booking1).isNotEqualTo(booking2);
+        TestUtil.equalsVerifier(Resource.class);
+        Resource resource1 = new Resource();
+        resource1.setId("id1");
+        Resource resource2 = new Resource();
+        resource2.setId(resource1.getId());
+        assertThat(resource1).isEqualTo(resource2);
+        resource2.setId("id2");
+        assertThat(resource1).isNotEqualTo(resource2);
+        resource1.setId(null);
+        assertThat(resource1).isNotEqualTo(resource2);
     }
+
+
+
+
+
+
 }

@@ -105,7 +105,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        String [] publicUrls = new String []{ "/api/bookings/**", "api/booking"}; //added by mrae on 29/11
+        String [] publicUrls = new String []{ "/api/bookings/**", "api/booking", "/api/merchants/booking/**", "api/merchants/booking", }; //added by mrae on 29/11
 
         http
             .csrf()

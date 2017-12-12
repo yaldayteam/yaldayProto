@@ -1,11 +1,11 @@
 package com.yalday.proto.service.dto;
 
 import com.yalday.proto.domain.Resource;
-
+import com.yalday.proto.domain.Booking;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.ArrayList;
 
 /**
  * A DTO for the Merchant entity.
@@ -37,6 +37,132 @@ public class MerchantDTO implements Serializable {
     private String userid;
 
     private List<Resource> resources;
+
+    private List<Booking> bookings;
+
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
+
+
+    public void addResource(Resource resource){
+
+        if(resources == null)
+        {
+            resources = new ArrayList<Resource>();
+            resources.add(resource);
+        }
+        else
+        {
+            resources.add(resource);
+        }
+    }
+
+    public void updateResource(Resource resource) {
+
+        if(resources == null)
+        {
+            resources = new ArrayList<Resource>();
+            resources.add(resource);
+        }
+        else
+        {
+            for (int i = 0; i < resources.size(); i++)
+            {
+                Resource elementResource = resources.get(i);
+                if (elementResource.equals(resource))
+                {
+                    resources.set(i, resource);
+                    i = resources.size();
+                }
+            }
+        }
+    }
+
+
+    public void deleteResource(String id) {
+
+        if(resources != null)
+        {
+            for (int i = 0; i < resources.size(); i++)
+            {
+                Resource elementResource = resources.get(i);
+
+                if (elementResource.getId().equals(id))
+                {
+                    resources.remove(i);
+                    i = resources.size() + 1;
+                }
+            }
+        }
+    }
+
+
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public void addBooking(Booking booking){
+
+        if(bookings == null)
+        {
+            bookings = new ArrayList<Booking>();
+            bookings.add(booking);
+        }
+        else
+        {
+            bookings.add(booking);
+        }
+    }
+
+    public void updateBooking(Booking booking) {
+
+        if(bookings == null)
+        {
+            bookings = new ArrayList<Booking>();
+            bookings.add(booking);
+        }
+        else
+        {
+            for (int i = 0; i < bookings.size(); i++)
+            {
+                Booking elementBooking = bookings.get(i);
+                if (elementBooking.equals(booking))
+                {
+                    bookings.set(i, booking);
+                    i = bookings.size();
+                }
+            }
+        }
+    }
+
+    public void deleteBooking(String id) {
+
+        if(bookings != null)
+        {
+            for (int i = 0; i < bookings.size(); i++)
+            {
+                Booking elementBooking = bookings.get(i);
+
+                if (elementBooking.getId().equals(id))
+                {
+                    bookings.remove(i);
+                    i = bookings.size() + 1;
+                }
+            }
+        }
+    }
+
+
 
     public String getId() {
         return id;
@@ -141,17 +267,11 @@ public class MerchantDTO implements Serializable {
             ", email='" + email + '\'' +
             ", phonenumber='" + phonenumber + '\'' +
             ", userid='" + userid + '\'' +
-            ", resources=" + resources +
+            ", resources='" + resources + '\'' +
+            ", bookings=" + bookings +
             '}';
     }
 
-    public List<Resource> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
-    }
 
     @Override
     public boolean equals(Object o) {

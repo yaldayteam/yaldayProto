@@ -5,6 +5,7 @@ import com.yalday.proto.YaldayProtoApp;
 
 import com.yalday.proto.domain.Appointment;
 import com.yalday.proto.domain.Merchant;
+import com.yalday.proto.domain.Booking;
 import com.yalday.proto.domain.Resource;
 import com.yalday.proto.repository.MerchantRepository;
 import com.yalday.proto.service.MerchantService;
@@ -94,6 +95,8 @@ public class MerchantResourceIntTest {
 
     private Merchant merchant;
 
+    private Booking booking;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -122,12 +125,29 @@ public class MerchantResourceIntTest {
                 .backgroundColor(DEFAULT_BACKGROUND_COLOR)
                 .email(DEFAULT_EMAIL)
                 .phonenumber(DEFAULT_PHONENUMBER)
-                .userid(DEFAULT_USERID)
-                .resources(Lists.newArrayList(createResource()));
+                .userid(DEFAULT_USERID);
+            //    .resources(Lists.newArrayList(createResource()));
         return merchant;
     }
 
-    public static Resource createResource(){
+    public static Booking createBookingEntity(){
+
+        Booking booking = new Booking()
+                            .text("test booking");
+
+        return booking;
+
+    }
+
+    @Before
+    public void initTest() {
+        merchantRepository.deleteAll();
+        merchant = createEntity();
+        booking = createBookingEntity();
+    }
+
+
+  /*  public static Resource createResource(){
         return new Resource(createAppointment());
     }
 
@@ -139,12 +159,7 @@ public class MerchantResourceIntTest {
             , appointment1EndTime.toDate()
         );
     }
-
-    @Before
-    public void initTest() {
-        merchantRepository.deleteAll();
-        merchant = createEntity();
-    }
+*/
 
     @Test
     public void createMerchant() throws Exception {
@@ -218,8 +233,8 @@ public class MerchantResourceIntTest {
             .andExpect(jsonPath("$.backgroundColor").value(DEFAULT_BACKGROUND_COLOR.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()))
-            .andExpect(jsonPath("$.userid").value(DEFAULT_USERID.toString()))
-            .andExpect(jsonPath("$.resources").isNotEmpty());
+            .andExpect(jsonPath("$.userid").value(DEFAULT_USERID.toString()));
+         //   .andExpect(jsonPath("$.resources").isNotEmpty());
     }
 
     @Test

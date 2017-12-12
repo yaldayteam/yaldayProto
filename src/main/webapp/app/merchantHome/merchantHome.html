@@ -60,6 +60,9 @@
                 </dl>
 
 
+
+
+
                 <button type="button" ui-sref="merchantHome.edit({id:vm.account.merchant.id})" class="btn btn-primary">
                     <span class="glyphicon glyphicon-pencil"></span>
                     <span class="hidden-xs hidden-sm"> Edit</span>
@@ -76,22 +79,12 @@
 
         </div>
 
-
-
-
         <div ng-switch-when="false" style="color:red">
-
-
-
-
             <div class="col-md-8">
             <div class="container-fluid col-md-8">
-
                 <b> You have no merchant details. Please add your details below</b>
                 <br>
                 <div class="row">
-
-
                     <div class="col-xs-4 no-padding-right">
                         <button class="btn btn-primary" ui-sref="merchantHome.new" >
                             <span class="glyphicon glyphicon-plus"></span>
@@ -101,11 +94,8 @@
                         </button>
                     </div>
                 </div>
-
             </div>
-
             <br>
-
             </div>
         </div>
 
@@ -131,14 +121,138 @@
     <div ng-switch="vm.account.merchant.id != null">
 
 
+        <div>
+            <h2>Resources</h2>
+            <jhi-alert></jhi-alert>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-4 no-padding-left">
+                        <button class="btn btn-primary" ui-sref="merchantHome.new-resource" >
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span >
+                        Create new Resource
+                    </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <table class="jh-table table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span>ID</span></th>
+                        <th><span>Text</span></th>
+                        <th><span>Color</span></th>
+                        <th><span>Capacity</span></th>
+                        <th><span>Multiplebooking</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="resource in vm.resources track by resource.id">
+                        <td><a ui-sref="resource-detail({id:resource.id})">{{resource.id}}</a></td>
+                        <td>{{resource.text}}</td>
+                        <td>{{resource.color}}</td>
+                        <td>{{resource.capacity}}</td>
+                        <td>{{resource.multiplebooking}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        ui-sref="merchantHome.edit-resource({id:resource.id})"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="hidden-sm-down"></span>
+                                </button>
+                                <button type="submit"
+                                        ui-sref="merchantHome.delete-resource({id:resource.id})"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                    <span class="hidden-sm-down"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+        <div>
+            <h2>Bookings</h2>
+            <jhi-alert></jhi-alert>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-4 no-padding-left">
+                        <button class="btn btn-primary" ui-sref="merchantHome.new-booking" >
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span >
+                        Create new Booking
+                    </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <table class="jh-table table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span>ID</span></th>
+                        <th><span>Text</span></th>
+                        <th><span>Priority</span></th>
+                        <th><span>Start Time</span></th>
+                        <th><span>End Time</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="booking in vm.bookings track by booking.id">
+                        <td><a ui-sref="merchantHome.Booking-detail({id:booking.id})">{{booking.id}}</a></td>
+                        <td>{{booking.text}}</td>
+                        <td>{{booking.priorityId}}</td>
+                        <td>{{booking.startDate | date:'medium'}}</td>
+                        <td>{{booking.endDate | date:'medium'}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+
+                                        ui-sref="merchantHome.booking-edit({id:booking.id})"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="hidden-sm-down"></span>
+                                </button>
+                                <button type="submit"
+                                        ui-sref="merchantHome.booking-delete({id:booking.id})"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                    <span class="hidden-sm-down"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        </div>
 
         <div  ng-switch-when="true" >
 
             <b>Your Booking Calendar</b>
 
 
-            <div dx-scheduler>
-            </div>
+            <div dx-scheduler="options"></div>
          </div>
+
+
+
     </div>
 </div>

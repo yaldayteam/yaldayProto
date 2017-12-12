@@ -14,6 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+import org.bson.types.ObjectId;
 import com.yalday.proto.service.UserService;
 
 
@@ -25,18 +27,21 @@ public class MerchantService {
 
     private final Logger log = LoggerFactory.getLogger(MerchantService.class);
 
-    @Inject
-    private MerchantRepository merchantRepository;
+    private final MerchantRepository merchantRepository;
 
-    @Inject
-    private MerchantMapper merchantMapper;
+    private final MerchantMapper merchantMapper;
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    public MerchantService(MerchantRepository merchantRepository, MerchantMapper merchantMapper, UserService userService) {
+        this.merchantRepository = merchantRepository;
+        this.merchantMapper = merchantMapper;
+        this.userService = userService;
+    }
+
 
     /**
      * Save a merchant.
-     *
      * @param merchantDTO the entity to save
      * @return the persisted entity
      */
@@ -74,11 +79,11 @@ public class MerchantService {
         return merchantMapper.merchantToMerchantDTO(merchant);
     }
 
-    public Appointment findAppointments(String id){
+ /*   public Appointment findAppointments(String id){
         log.debug("Request to get Merchant appointments : {}", id);
         Merchant merchant = merchantRepository.findOne(id);
         return merchant.getResources().get(0).getAppointment();
-    }
+    }*/
 
     /**
      *  Delete the  merchant by id.
@@ -90,4 +95,40 @@ public class MerchantService {
         merchantRepository.delete(id);
         userService.deleteUserMerchant();
     }
+
+    /**
+     *  Get one merchant by booking id.
+     *
+     *  @param id the id of the booking contained in the merchant entity
+     *  @return the merchant entity
+     */
+    public MerchantDTO findOneByBookingId(String id) {
+
+        log.debug("Request to get Merchant : {}", id);
+        Merchant merchant = merchantRepository.findOneByBookingsId(new ObjectId(id));
+
+        return merchantMapper.merchantToMerchantDTO(merchant);
+    }
+
+    /**
+     *  Get one merchant by resource id.
+     *
+     *  @param id the id of the resource contained in the merchant entity
+     *  @return the merchant entity
+     */
+    public MerchantDTO findOneByResourceId(String id) {
+
+        log.debug("Request to get Merchant : {}", id);
+        Merchant merchant = merchantRepository.findOneByResourcesId(new ObjectId(id));
+
+        return merchantMapper.merchantToMerchantDTO(merchant);
+    }
+
+
+
+
+
+
+
+
 }

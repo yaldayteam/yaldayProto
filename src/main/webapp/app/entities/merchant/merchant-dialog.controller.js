@@ -27,26 +27,20 @@
             vm.isSaving = true;
             if (vm.merchant.id !== null) {
 
-                //console.log("Im in dialog controller");
-                //console.log(vm.merchant);
-                //vm.merchant.resources = {id:1};
+
                 Merchant.update(vm.merchant, onSaveSuccess, onSaveError);
+
+                     Auth.updateAccount(vm.user).then(function() {
+                                    vm.error = null;
+                                    vm.success = 'OK';
+
+                                }).catch(function() {
+                                    vm.success = null;
+                                    vm.error = 'ERROR';
+                                });
 
             } else {
                 Merchant.save(vm.merchant, onSaveSuccess, onSaveError);
-               /* vm.user.merchants = [{address:vm.merchant.address,
-                                    bgColor:vm.merchant.bgColor,
-                                    category:vm.merchant.category,
-                                    city:vm.merchant.city,
-                                    country:vm.merchant.country,
-                                    description:vm.merchant.description,
-                                    email:vm.merchant.email,
-                                    id:vm.merchant.id,
-                                    name:vm.merchant.name,
-                                    phoneNumber:vm.merchant.phoneNumber,
-                                    postcode:vm.merchant.postcode,
-                                    textColor:vm.merchant.textColor,
-                                        }];*/
 
 
                 Auth.updateAccount(vm.user).then(function() {
